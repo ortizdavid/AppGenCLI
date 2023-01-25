@@ -8,7 +8,7 @@
 
 ## USAGE:
 
-<b>appgen</b> <b>-name</b> <application name> <b>-lang</b> <language> <b>-type</b> <type of project> <b>-db</b> <database>
+**appgen** **-name** <application name> **-lang** <language> **-type** <type of project> **-db** <database>
 
 
 ##  COMANDS:
