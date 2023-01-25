@@ -1,15 +1,14 @@
-## BASIC INFO:
-- appgen - tool for generate applications
-- Source code     https://www.github.com/ortizdavid/appgenerator
-- Version         1.0.0
+# appgen - tool for generate applications
 
 ## DESCRIPTION:
-    This tool helps create the structure of an application, including database
-    For now it generates for Python and PHP
+### This tool helps create the structure of an application, including database
+### For now it generates for Python and PHP
+
+
 
 ## USAGE:
 ``
-**appgen** **-name** <application name> **-lang** <language> **-type** <type of project> **-db** <database>
+<b>appgen</b> <b>**-name**</b> <application name> <b>-lang</b> <language> <b>-type</b> <type of project> <b>-db</b> <database>
 ``
 
 ##  COMANDS:
@@ -23,27 +22,27 @@
 
 ## EXAMPLES:
 
-Create a MVC App with Python and MySQL
+1. Create a MVC App with Python and MySQL:
     ``
     appgen -name PythonWebMVC -lang python -type mvc -db mysql 
     ``
 
-Creates an API with Python and Postgres
+2. Creates an API with Python and Postgres:
     ``
     appgen -name MyPythAPI -lang python -type api -db postgres    
     `` 
 
-Create a MVC App with PHP and MySQL
+3. Create a MVC App with PHP and MySQL:
     ``
     appgen -name PHPSimpleApp -lang php -type mvc -db mysql 
     ``
 
-Show help comands
+4. Show help comands:
     ``
     appgen help 
     ``   
 
-List all suportded languages
+5. List all suportded languages:
     ``
     appgen list-langs 
     ``                                                      
