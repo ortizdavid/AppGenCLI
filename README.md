@@ -7,9 +7,9 @@
 
 
 ## USAGE:
-``
-<b>appgen</b> <b>**-name**</b> <application name> <b>-lang</b> <language> <b>-type</b> <type of project> <b>-db</b> <database>
-``
+
+<b>appgen</b> <b>-name</b> <application name> <b>-lang</b> <language> <b>-type</b> <type of project> <b>-db</b> <database>
+
 
 ##  COMANDS:
 - **appgen**:     First command
