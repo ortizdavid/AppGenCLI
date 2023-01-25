@@ -9,24 +9,44 @@
 
 ## USAGE:
 ``
-appgen -name <appname> -lang <language> -type <type of project> -db <database>
+**appgen** **-name** <application name> **-lang** <language> **-type** <type of project> **-db** <database>
 ``
 
 ##  COMANDS:
-appgen           First command
-- list-langs      List all supported languages and applications
-- help            Shows helps for appgen
-- -name           Project Name
-- -lang           Programming Language
-- -type           Type of application (mvc, api)
-- -db             database 
+- **appgen**:     First command
+- **list-langs**: List all supported languages and applications
+- **help**:       Shows helps for appgen
+- **-name**:      Project Name
+- **-lang**:      Programming Language
+- **-type**:      Type of application (mvc, api)
+- **-db**:        database 
 
 ## EXAMPLES:
-- appgen -name PythonWebMVC -lang python -type mvc -db mysql              Creates a MVC App with Python and MySQL
-- appgen -name MyPythAPI -lang python -type api -db postgres              Creates an API with Python and Postgres
-- appgen -name PHPSimpleApp -lang php -type mvc -db mysql                 Creates a MVC App with PHP and MySQL
-- appgen help                                                             Shows help comands
-- appgen list-langs                                                       Lists all suportded languages
+
+Create a MVC App with Python and MySQL
+    ``
+    appgen -name PythonWebMVC -lang python -type mvc -db mysql 
+    ``
+
+Creates an API with Python and Postgres
+    ``
+    appgen -name MyPythAPI -lang python -type api -db postgres    
+    `` 
+
+Create a MVC App with PHP and MySQL
+    ``
+    appgen -name PHPSimpleApp -lang php -type mvc -db mysql 
+    ``
+
+Show help comands
+    ``
+    appgen help 
+    ``   
+
+List all suportded languages
+    ``
+    appgen list-langs 
+    ``                                                      
 
 ## AUTHOR:
 - Name:         Ortiz de Arcanjo António David
