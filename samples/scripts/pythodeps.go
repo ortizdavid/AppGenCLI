@@ -21,6 +21,7 @@ func (pyd * PythonDeps) InstallDeps() string {
 		pip install flask-SQLAlchemy
 		pip install psycopg2
 		pip install psycopg2
+		pip install Werkzeug
 	`
 }
 

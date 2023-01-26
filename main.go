@@ -6,6 +6,8 @@ import (
 
 	"github.com/ortizdavid/appgen/filemanager"
 	"github.com/ortizdavid/appgen/helpers"
+
+	pythonsamples "github.com/ortizdavid/appgen/samples/python"
 )
 
 var commands = []string {"-name", "-lang", "-type", "-db"}
@@ -48,18 +50,20 @@ func main() {
 			fmt.Println(helpers.INVALID_COMMAND)
 
 		} else if helpers.Contains(languages, lang) == false {
-			fmt.Printf(helpers.INVALID_LANGUAGE, lang)
+			fmt.Printf(helpers.UNSUPORTED_LANGUAGE, lang)
 
 		} else if helpers.Contains(types, appType) == false {
-			fmt.Printf(helpers.INVALID_TYPE, appType)
+			fmt.Printf(helpers.UNSUPORTED_TYPE, appType)
 
 		} else if helpers.Contains(databases, db) == false {
-			fmt.Printf(helpers.INVALID_DB, db)
+			fmt.Printf(helpers.UNSUPORTED_DB, db)
 
 		} else {
 			CreateApplication(appName, lang, appType, db)
 			var fm *filemanager.FileManager
+			var config *pythonsamples.ConfigPy
 			fm.CreateFile("flaskApi", "app.py")
+			fmt.Println(config.GetConfig(db))
 		}
 	}
 }

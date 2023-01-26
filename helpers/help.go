@@ -50,7 +50,7 @@ func Usage() {
 func Examples() {
 	fmt.Println("EXAMPLES:")
 	fmt.Println("\tappgen -name PythonWebMVC -lang python -type mvc -db mysql\t\tCreates a MVC App with Python and MySQL")
-	fmt.Println("\tappgen -name MyPythAPI -lang python -type api -db postgres\t\tCreates an API with Python and Postgres")
+	fmt.Println("\tappgen -name PythpnAPI -lang python -type api -db postgres\t\tCreates an API with Python and Postgres")
 	fmt.Println("\tappgen -name PHPSimpleApp -lang php -type mvc -db mysql\t\t\tCreates a MVC App with PHP and MySQL")
 	fmt.Println("\tappgen help\t\t\t\t\t\t\t\tShows help comands")
 	fmt.Println("\tappgen list-langs\t\t\t\t\t\t\tLists all suportded languages")
