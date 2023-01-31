@@ -10,5 +10,8 @@ func Contains(s []string, str string)  bool {
 }
 
 func ContainsMultiple(s [] string, param1, param2, param3, param4 string)  bool {
-	return Contains(s, param1) == true && Contains(s, param2) == true && Contains(s, param3) == true && Contains(s, param4) == true 
+	return Contains(s, param1) && 
+		Contains(s, param2) && 
+		Contains(s, param3) && 
+		Contains(s, param4)
 }

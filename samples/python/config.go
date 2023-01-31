@@ -4,7 +4,7 @@ package pythonsamples
 type ConfigPy struct {}
 
 
-func (conf *ConfigPy) GetConfig(db string) string   {
+func (conf *ConfigPy) CreateConfig(db string) string   {
 
 	var rdms, dbUser, dbPort string
 	var dbPassword = ""
@@ -25,23 +25,22 @@ func (conf *ConfigPy) GetConfig(db string) string   {
 	}
 
 	return `
+RDMS = "`+rdms+`"
+DB_USER = "`+dbUser+`"
+DB_PASSWORD = "`+dbPassword+`"
+DB_HOST = "`+dbHost+`"
+DB_PORT = "`+dbPort+`"
+DB_NAME = "`+dbName+`"
+DB_URI = f"{RDMS}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-		RDMS = "`+rdms+`"
-		DB_USER = "`+dbUser+`"
-		DB_PASSWORD = "`+dbPassword+`"
-		DB_HOST = "`+dbHost+`"
-		DB_PORT = "`+dbPort+`"
-		DB_NAME = "`+dbName+`"
-		DB_URI = f"{RDMS}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = 'my-app'
 
-		app = Flask(__name__)
-		app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
-		app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-		app.secret_key = 'my-app'
+db = SQLAlchemy()
+db.init_app(app)
 
-		db = SQLAlchemy()
-		db.init_app(app)
-
-		engine = create_engine(DB_URI)
-	`
+engine = create_engine(DB_URI)
+`
 }

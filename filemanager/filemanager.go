@@ -10,6 +10,7 @@ import (
 
 type IFileManager interface {
 	CreateFolder(folderName string) 
+	CreateFolderAll(folderName string) 
 	CreateFile(dirName string, fileName string)
 	MoveFile(fileName string, origin string,  destination string)
 	WriteFile(folderName string, fileName string, content string)
@@ -20,6 +21,15 @@ type FileManager struct {}
 
 func (fm *FileManager) CreateFolder(folderName string) {
 	folder := os.Mkdir(folderName, os.FileMode(1))
+	if folder != nil {
+		fmt.Println(folder.Error())
+	} else {
+		fmt.Printf(helpers.FOLDER_CREATED, folderName)
+	}
+}
+
+func (fm *FileManager) CreateFolderAll(folderName string) {
+	folder := os.MkdirAll(folderName, os.FileMode(1))
 	if folder != nil {
 		fmt.Println(folder.Error())
 	} else {
@@ -44,7 +54,7 @@ func (fm *FileManager) MoveFile(fileName string, origin string, destination stri
 }
 
 func (fm *FileManager) WriteFile(folderName string, fileName string, content string) {
-	file, err := os.OpenFile(folderName +"/"+ fileName, os.O_WRONLY, 0666)
+	file, err := os.OpenFile(folderName +"/"+ fileName, os.O_APPEND, 0666)
 	if err != nil {
 		fmt.Println(err)
 	} else {
