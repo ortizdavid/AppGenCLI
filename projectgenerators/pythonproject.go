@@ -2,10 +2,10 @@ package projectgenerators
 
 import (
 	"github.com/ortizdavid/appgen/filemanager"
+	"github.com/ortizdavid/appgen/helpers"
 	dbsamples "github.com/ortizdavid/appgen/samples/db"
 	pythonsamples "github.com/ortizdavid/appgen/samples/python"
 	"github.com/ortizdavid/appgen/samples/scripts"
-	//dbsamples "github.com/ortizdavid/appgen/samples/db"
 )
 
 type PythonProject struct {}
@@ -14,16 +14,28 @@ type PythonProject struct {}
 var fm *filemanager.FileManager
 var config *pythonsamples.ConfigPy
 var appImport *pythonsamples.AppImport
+var readme *helpers.ReadMePy
 
 
-func (python *PythonProject)  GenerateConfig(rootDir string, db string) {
+func (python *PythonProject) GenerateConfig(rootDir string, db string) {
 	file := "config.py"
 	fm.CreateFile(rootDir, file)
 	fm.WriteFile(rootDir, file, appImport.ImportForConfig())
 	fm.WriteFile(rootDir, file, config.CreateConfig(db))
 }
 
-func (python *PythonProject)  GenerateMain(rootDir string, appType string) {
+func (python *PythonProject) GenerateReadme(rootDir string, db string, appType string) {
+	file := "README.md"
+	fm.CreateFile(rootDir, file)
+	switch appType {
+	case "mvc":
+		fm.WriteFile(rootDir, file, readme.ReadmeMVC(db))
+	case "api":
+		fm.WriteFile(rootDir, file, readme.ReadmeAPI(db))
+	}
+}
+
+func (python *PythonProject) GenerateMain(rootDir string, appType string) {
 	file := "main.py"
 	fm.CreateFile(rootDir, file)
 	switch appType {
@@ -35,29 +47,29 @@ func (python *PythonProject)  GenerateMain(rootDir string, appType string) {
 	fm.WriteFile(rootDir, file, appImport.AppMainCode())
 }
 
-func (python *PythonProject)  GenerateModels(rootDir string) {
+func (python *PythonProject) GenerateModels(rootDir string) {
 	fm.CreateFolderAll(rootDir+"/models")
 }
 
-func (python *PythonProject)  GenerateViews(rootDir string) {
+func (python *PythonProject) GenerateViews(rootDir string) {
 	fm.CreateFolderAll(rootDir+"/templates")
 }
 
-func (python *PythonProject)  GenerateStaticFiles(rootDir string) {
+func (python *PythonProject) GenerateStaticFiles(rootDir string) {
 	fm.CreateFolderAll(rootDir+"/static/css")
 	fm.CreateFolderAll(rootDir+"/static/js")
 	fm.CreateFolderAll(rootDir+"/static/imgs")
 }
 
-func (python *PythonProject)  GenerateMvcControllers(rootDir string) {
+func (python *PythonProject) GenerateMvcControllers(rootDir string) {
 	fm.CreateFolderAll(rootDir+"/controllers")
 }
 
-func (python *PythonProject)  GenerateApiControllers(rootDir string) {
+func (python *PythonProject) GenerateApiControllers(rootDir string) {
 	fm.CreateFolderAll(rootDir+"/api_controllers")
 }
 
-func (python *PythonProject)  GenerateMySqlDB(rootDir string) {
+func (python *PythonProject) GenerateMySqlDB(rootDir string) {
 	var mysql *dbsamples.MySqlDB
 	dbDir := rootDir+"/database"
 	file := "db_task.sql"
@@ -71,7 +83,7 @@ func (python *PythonProject)  GenerateMySqlDB(rootDir string) {
 	fm.WriteFile(dbDir, file, mysql.InsertTasks())
 }
 
-func (python *PythonProject)  GeneratePostgresDB(rootDir string) {
+func (python *PythonProject) GeneratePostgresDB(rootDir string) {
 	var postgres *dbsamples.PostgresDB
 	dbDir := rootDir+"/database"
 	file := "db_task.sql"
@@ -102,7 +114,6 @@ func (python *PythonProject) CreateApp(appName string, appType string, db string
 		python.GenerateViews(appName)
 		python.GenerateStaticFiles(appName)
 		python.GenerateMvcControllers(appName)
-
 	case "api":
 		python.GenerateApiControllers(appName)
 	}
@@ -116,5 +127,6 @@ func (python *PythonProject) CreateApp(appName string, appType string, db string
 	python.GenerateConfig(appName, db)
 	python.GenerateRequirements(appName, db)
 	python.GenerateMain(appName, appType)
+	python.GenerateReadme(appName, db, appType)
 }
 

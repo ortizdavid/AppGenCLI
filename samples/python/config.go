@@ -7,7 +7,7 @@ type ConfigPy struct {}
 func (conf *ConfigPy) CreateConfig(db string) string   {
 
 	var rdms, dbUser, dbPort string
-	var dbPassword = ""
+	var dbPassword = "DATABASE_PASSWORD"
 	var dbHost = "localhost"
 	var dbName = "db_task"
 

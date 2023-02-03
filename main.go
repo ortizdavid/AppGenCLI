@@ -8,14 +8,10 @@ import (
 	"github.com/ortizdavid/appgen/helpers"
 )
 
-
-
 func main() {
-
 	var cliArgs = os.Args;
 	var lenArgs = len(cliArgs)
 	var project  *projectgenerators.ProjectGenerator
-	
 	
 	if lenArgs == 1 {
 		helpers.PrintHelp()

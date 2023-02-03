@@ -3,9 +3,6 @@ package projectgenerators
 import (
 	"fmt"
 	"github.com/ortizdavid/appgen/helpers"
-
-	//dbsamples "github.com/ortizdavid/appgen/samples/db"
-	//pythonsamples "github.com/ortizdavid/appgen/samples/python"
 )
 
 type IGenerator interface {
@@ -22,9 +19,7 @@ type IGenerator interface {
 	CreateApp(appName string, appType string, db string)
 }
 
-type ProjectGenerator struct {
-}
-
+type ProjectGenerator struct {}
 
 func (project *ProjectGenerator) Generate(appName string, lang string, appType string, db string)  {
 	fmt.Printf(helpers.CREATING_PROJECT, appName)

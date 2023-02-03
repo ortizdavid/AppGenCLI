@@ -15,3 +15,14 @@ func ContainsMultiple(s [] string, param1, param2, param3, param4 string)  bool 
 		Contains(s, param3) && 
 		Contains(s, param4)
 }
+
+func StrDatabase(db string) string {
+	var database = ""
+	switch db {
+	case "mysql":
+		database = "MySQL"
+	case "postgres": 
+		database = "PostgreSQL"
+	}
+	return database
+}
