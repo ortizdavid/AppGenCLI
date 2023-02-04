@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-
 	"github.com/ortizdavid/appgen/projectgenerators"
 	"github.com/ortizdavid/appgen/helpers"
 )
@@ -52,4 +51,3 @@ func main() {
 		}
 	}
 }
-

@@ -4,10 +4,7 @@ import (
 	
 )
 
-type PhpProject struct {
-	
-}
-
+type PhpProject struct {}
 
 func (php *PhpProject)  CreateViews () {
 	

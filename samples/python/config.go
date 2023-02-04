@@ -1,8 +1,6 @@
 package pythonsamples
 
-
 type ConfigPy struct {}
-
 
 func (conf *ConfigPy) CreateConfig(db string) string   {
 
@@ -25,6 +23,7 @@ func (conf *ConfigPy) CreateConfig(db string) string   {
 	}
 
 	return `
+	
 RDMS = "`+rdms+`"
 DB_USER = "`+dbUser+`"
 DB_PASSWORD = "`+dbPassword+`"
@@ -41,6 +40,5 @@ app.secret_key = 'my-app'
 db = SQLAlchemy()
 db.init_app(app)
 
-engine = create_engine(DB_URI)
-`
+engine = create_engine(DB_URI)`
 }

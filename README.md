@@ -5,7 +5,6 @@
 ### For now it generates for Python and PHP
 
 
-
 ## USAGE:
 
 **appgen** **-name** application_name **-lang** language **-type** application_type **-db** <database>

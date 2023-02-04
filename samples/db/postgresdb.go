@@ -1,21 +1,15 @@
 package dbsamples
 
-
 type PostgresDB struct {}
 
-
 func (pg *PostgresDB) CreateDatabase() string {
-return `
--- CREATING AND SELECT DATABASE
+return `-- CREATING AND SELECT DATABASE
 CREATE DATABASE db_task;
-\c db_task;
-
-`
+\c db_task;`
 }
 
 func (pg *PostgresDB) CreateTables() string {
-return `
--- CREATING TABLES ASNF TYPES
+return `-- CREATING TABLES ASNF TYPES
 CREATE TYPE TYPE_STATUS AS ENUM('Completed', 'In Progress', 'Pending');
 
 DROP TABLE IF EXISTS roles;
@@ -45,14 +39,11 @@ CREATE TABLE IF NOT EXISTS tasks (
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_task_user FOREIGN KEY(user_id) REFERENCES users(user_id)
-);
-
-`
+);`
 }
 
 func (pg *PostgresDB) CreateSQLViews() string {
-return `
--- CREATING VIEW view_user_tasks
+return `-- CREATING VIEW view_user_tasks
 DROP VIEW IF EXISTS view_user_tasks;
 CREATE VIEW view_user_tasks AS 
 SELECT t.task_id, t.task_name,
@@ -73,8 +64,7 @@ SELECT u.user_id AS user_id, u.user_name,
 	r.role_name
 FROM users u
 JOIN roles r ON(r.role_id = u.role_id)
-ORDER BY u.created_at DESC;
-`
+ORDER BY u.created_at DESC;`
 }
 
 
@@ -82,27 +72,30 @@ func (pg *PostgresDB) InsertRoles() string {
 return `
 -- INSERTING DATA
 INSERT INTO roles (role_name) VALUES ('admin');
-INSERT INTO roles (role_name) VALUES ('normal');
-`
+INSERT INTO roles (role_name) VALUES ('normal');`
 }
 
 func (pg *PostgresDB) InsertUsers() string {
-return `
-INSERT INTO users (user_name, password, role_id) VALUES ('admin01', '12345678', 1);
+return `INSERT INTO users (user_name, password, role_id) VALUES ('admin01', '12345678', 1);
 INSERT INTO users (user_name, password, role_id) VALUES ('user01', '12345678', 2);
 INSERT INTO users (user_name, password, role_id) VALUES ('user02', '12345678', 2);
 INSERT INTO users (user_name, password, role_id) VALUES ('user04', '12345678', 2);
-INSERT INTO users (user_name, password, role_id) VALUES ('user05', '12345678', 2);
-`
+INSERT INTO users (user_name, password, role_id) VALUES ('user05', '12345678', 2);`
 }
 
 func (pg *PostgresDB) InsertTasks() string {
-return `
-INSERT INTO tasks (task_name, description, user_id) VALUES ('Read a Book', 'Reading a programming book', 2);
+return `INSERT INTO tasks (task_name, description, user_id) VALUES ('Read a Book', 'Reading a programming book', 2);
 INSERT INTO tasks (task_name, description, user_id) VALUES ('Make a Lunch', 'Reading a programming book', 3);
 INSERT INTO tasks (task_name, description, user_id) VALUES ('Walk in the moon', 'Walking with my dog every day, at 6 AM', 4);
-INSERT INTO tasks (task_name, description, user_id) VALUES ('Send an email', 'Send an email to recruites', 5);
-`
+INSERT INTO tasks (task_name, description, user_id) VALUES ('Send an email', 'Send an email to recruites', 5);`
 }
 
 
+func (pg *PostgresDB) GetDatabaseScript() string {
+return ``+pg.CreateDatabase()+`
+`+pg.CreateTables()+`
+`+pg.CreateSQLViews()+`
+`+pg.InsertRoles()+`
+`+pg.InsertUsers()+`
+`+pg.InsertTasks()+``
+}

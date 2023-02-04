@@ -25,7 +25,6 @@ pip install Werkzeug
 `
 }
 
-
 func (pyd * PythonDeps) Requirements(db string) string {
 	var dbDep string
 	switch db {
@@ -41,5 +40,3 @@ SQLAlchemy
 `+dbDep+`
 `
 }
-	
-	

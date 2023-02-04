@@ -7,4 +7,5 @@ type SampleDB interface {
 	InsertRoles() string
 	InsertUsers() string
 	InsertTasks() string
+	GetDatabaseScript() string
 }

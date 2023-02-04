@@ -3,21 +3,10 @@ package filemanager
 import (
 	"fmt"
 	"os"
-
 	"github.com/ortizdavid/appgen/helpers"
 )
 
-
-type IFileManager interface {
-	CreateFolder(folderName string) 
-	CreateFolderAll(folderName string) 
-	CreateFile(dirName string, fileName string)
-	MoveFile(fileName string, origin string,  destination string)
-	WriteFile(folderName string, fileName string, content string)
-}
-
 type FileManager struct {}
-
 
 func (fm *FileManager) CreateFolder(folderName string) {
 	folder := os.Mkdir(folderName, os.FileMode(1))
