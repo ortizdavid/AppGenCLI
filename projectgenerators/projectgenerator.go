@@ -6,6 +6,7 @@ import (
 )
 
 type IGenerator interface {
+	GetProjectTypes() []string
 	GenerateConfig(rootDir string, db string)
 	GenerateMain(rootDir string, appType string)
 	GenerateModels(rootDir string)
@@ -36,11 +37,6 @@ func (project *ProjectGenerator) Generate(appName string, lang string, appType s
 func (project *ProjectGenerator) GetCommands() []string {
 	commands := [] string {"-name", "-lang", "-type", "-db"}
 	return commands
-}
-
-func (project *ProjectGenerator) GetTypes() []string {
-	types := [] string {"api", "mvc"}
-	return types
 }
 
 func (project *ProjectGenerator) GetDatabases() []string {

@@ -65,7 +65,7 @@ func PrintHelp()  {
 }
 
 func ListLanguages() {
-	fmt.Println("SUPORTED LANGUAGES:")
+	fmt.Println("\nSUPORTED LANGUAGES:")
 	fmt.Println("\tLang\tprojects")
 	fmt.Println("\tpython\tmvc, api")
 	fmt.Println()

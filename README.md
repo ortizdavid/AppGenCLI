@@ -4,11 +4,9 @@
 ### This tool helps create the structure of an application, including database
 ### For now it generates for Python and PHP
 
-
 ## USAGE:
 
 **appgen** **-name** application_name **-lang** language **-type** application_type **-db** <database>
-
 
 ##  COMANDS:
 - **appgen**:     First command
@@ -23,7 +21,7 @@
 
 1. Create a MVC App with Python and MySQL:
     ``
-    appgen -name PythonWebMVC -lang python -type mvc -db mysql 
+    appgen -name PythonMVC -lang python -type mvc -db mysql 
     ``
 
 2. Creates an API with Python and Postgres:

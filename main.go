@@ -40,9 +40,6 @@ func main() {
 		} else if helpers.Contains(project.GetLanguages(), lang) == false {
 			fmt.Printf(helpers.UNSUPORTED_LANGUAGE, lang)
 
-		} else if helpers.Contains(project.GetTypes(), appType) == false {
-			fmt.Printf(helpers.UNSUPORTED_TYPE, appType)
-
 		} else if helpers.Contains(project.GetDatabases(), db) == false {
 			fmt.Printf(helpers.UNSUPORTED_DB, db)
 
