@@ -17,6 +17,7 @@ var config *pythonsamples.ConfigPy
 var model *pythonsamples.Model
 var mvcController *pythonsamples.MvcController
 var apiController *pythonsamples.ApiController
+var staticFile *pythonsamples.StaticFile
 
 func (python *PythonProject) GenerateConfig(rootDir string, db string) {
 	file := "config.py"
@@ -67,9 +68,18 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 }
 
 func (python *PythonProject) GenerateStaticFiles(rootDir string) {
-	fileManager.CreateFolderAll(rootDir+"/static/css")
-	fileManager.CreateFolderAll(rootDir+"/static/js")
-	fileManager.CreateFolderAll(rootDir+"/static/imgs")
+	staticCss := rootDir+"/static/css"
+	staticJs := rootDir+"/static/js"
+	staticImgs := rootDir+"/static/images"
+	jsFile := "script.js"
+	cssFile := "style.css"
+	fileManager.CreateFolderAll(staticCss)
+	fileManager.CreateFolderAll(staticJs)
+	fileManager.CreateFolderAll(staticImgs)
+	fileManager.CreateFile(staticCss, cssFile)
+	fileManager.CreateFile(staticJs, jsFile)
+	fileManager.WriteFile(staticCss, cssFile, staticFile.CssContent())
+	fileManager.WriteFile(staticJs, jsFile, staticFile.JsContent())
 }
 
 func (python *PythonProject) GenerateMvcControllers(rootDir string) {
@@ -124,7 +134,7 @@ func (python *PythonProject) GeneratePostgresDB(rootDir string) {
 	fileManager.WriteFile(dbDir, file, postgres.GetDatabaseScript())
 }
 
-func (python *PythonProject)  GenerateRequirements(rootDir string, db string) {
+func (python *PythonProject) GenerateRequirements(rootDir string, db string) {
 	var deps *scripts.PythonDeps
 	file := "requirements.txt"
 	fileManager.CreateFile(rootDir, file)

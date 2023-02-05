@@ -14,20 +14,20 @@ class TaskController:
 func (mvc * MvcController) UserController()  string {
 return ``+mvcImport.ImportForUserController()+`
 
-class TaskController:
+class UserController:
 	pass`
 }
 
 func (mvc * MvcController) RoleController()  string {
 return ``+mvcImport.ImportForAllControllers()+`
 
-class TaskController:
+class RoleController:
 	pass`
 }
 
 func (mvc * MvcController) AuthController()  string {
 return ``+mvcImport.ImportForTaskController()+`
 
-class TaskController:
+class AuthController:
 	pass`
 }

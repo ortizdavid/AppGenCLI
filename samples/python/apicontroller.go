@@ -7,27 +7,27 @@ var apiImport *AppImport
 func (api *ApiController) TaskApiController()  string {
 return ``+apiImport.ImportForTaskController()+`
 
-class TaskController:
+class TaskApi:
 	pass`
 }
 
 func (api *ApiController) UserApiController()  string {
 return ``+apiImport.ImportForUserController()+`
 
-class TaskController:
+class UserApi:
 	pass`
 }
 
 func (api *ApiController) RoleApiController()  string {
 return ``+apiImport.ImportForAllControllers()+`
 
-class TaskController:
+class RoleApi:
 	pass`
 }
 
 func (api *ApiController) AuthApiController()  string {
 return ``+apiImport.ImportForAuthController()+`
 
-class TaskController:
+class AuthApi:
 	pass`
 }

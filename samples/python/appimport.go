@@ -49,7 +49,8 @@ from controllers import (
 	user_controller,
 	auth_controller,
 	task_controller
-)`
+)
+`
 }
 
 func (imp* AppImport) ImportForRestApi() string  {
@@ -59,11 +60,12 @@ from api_controllers import (
 	user_api,
 	auth_api,
 	task_api
-)`
+)
+`
 }
 
 func (imp* AppImport) AppMainCode() string {
 return `
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)`
+    app.run(port=APP_PORT, debug=True)`
 }

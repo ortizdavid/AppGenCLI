@@ -118,7 +118,9 @@ class Role(db.Model):
 
 	def __init__(self, role_name):
 		self.role_name = role_name
+
 	`+model.SaveAndDelete()+`
+	
 	@classmethod
 	def exists(cls, role_name):
 		return bool(cls.query.filter_by(role_name=role_name).first())
