@@ -33,8 +33,7 @@ func (pyd * PythonDeps) Requirements(db string) string {
 	case "postgres":	
 		dbDep = "psycopg2"
 	}
-	return `
-Flask
+	return `Flask
 flask-SQLAlchemy
 SQLAlchemy
 `+dbDep+`

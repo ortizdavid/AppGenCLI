@@ -3,24 +3,21 @@ package helpers
 type ReadMePy struct {}
 
 func (rdm *ReadMePy) ReadmeAPI(db string)  string {
-return `
-# Python REST API with `+StrDatabase(db)+`
+return `# Python REST API with `+StrDatabase(db)+`
 This API manage user tasks
 Users can Add, Remove, List and Edit daily tasks
 `+rdm.Instrunctions(db)+``
 }
 
 func (rdm *ReadMePy) ReadmeMVC(db string)  string {
-return `
-# Python MVC APP with `+StrDatabase(db)+`
+return `# Python MVC APP with `+StrDatabase(db)+`
 This API manage user tasks
 Users can Add, Remove, List and Edit daily tasks
 `+rdm.Instrunctions(db)+``
 }
 
 func (rdm *ReadMePy) Instrunctions(db string) string {
-return`
-## Pre requisites:
+return`## Pre requisites:
 - `+StrDatabase(db)+`
 - Python: version 3.9
 - Pip

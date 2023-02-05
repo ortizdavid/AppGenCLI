@@ -28,20 +28,15 @@
 
 2. Creates an API with Python and Postgres:
     ``
-    appgen -name MyPythAPI -lang python -type api -db postgres    
+    appgen -name PythonAPI -lang python -type api -db postgres    
     `` 
 
-3. Create a MVC App with PHP and MySQL:
-    ``
-    appgen -name PHPSimpleApp -lang php -type mvc -db mysql 
-    ``
-
-4. Show help comands:
+3. Show help comands:
     ``
     appgen help 
     ``   
 
-5. List all suportded languages:
+4. List all suportded languages:
     ``
     appgen list-langs 
     ``                                                      

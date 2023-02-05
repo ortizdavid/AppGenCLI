@@ -16,6 +16,8 @@ type IGenerator interface {
 	GenerateMySqlDB(rootDir string)
 	GeneratePostgresDB(rootDir string)
 	InstallDeps(rootDir string)
+	GenerateReadme(rootDir string, db string, appType string)
+	GenerateGitIgnore(rootDir string, appType string)
 	CreateApp(appName string, appType string, db string)
 }
 

@@ -31,7 +31,9 @@ DB_HOST = "`+dbHost+`"
 DB_PORT = "`+dbPort+`"
 DB_NAME = "`+dbName+`"
 DB_URI = f"{RDMS}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
 APP_PORT = "5000"
+UPLOAD_DIR = "uploads"
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI

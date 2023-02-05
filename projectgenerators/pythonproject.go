@@ -11,15 +11,11 @@ import (
 type PythonProject struct {}
 
 var fileManager *filemanager.FileManager
-var readme *helpers.ReadMePy
 var appImport *pythonsamples.AppImport
-var config *pythonsamples.ConfigPy
-var model *pythonsamples.Model
-var mvcController *pythonsamples.MvcController
-var apiController *pythonsamples.ApiController
-var staticFile *pythonsamples.StaticFile
+
 
 func (python *PythonProject) GenerateConfig(rootDir string, db string) {
+	var config *pythonsamples.ConfigPy
 	file := "config.py"
 	fileManager.CreateFile(rootDir, file)
 	fileManager.WriteFile(rootDir, file, appImport.ImportForConfig())
@@ -27,6 +23,7 @@ func (python *PythonProject) GenerateConfig(rootDir string, db string) {
 }
 
 func (python *PythonProject) GenerateReadme(rootDir string, db string, appType string) {
+	var readme *helpers.ReadMePy
 	file := "README.md"
 	fileManager.CreateFile(rootDir, file)
 	switch appType {
@@ -34,6 +31,18 @@ func (python *PythonProject) GenerateReadme(rootDir string, db string, appType s
 		fileManager.WriteFile(rootDir, file, readme.ReadmeMVC(db))
 	case "api":
 		fileManager.WriteFile(rootDir, file, readme.ReadmeAPI(db))
+	}
+}
+
+func (python *PythonProject) GenerateGitIgnore(rootDir string, appType string) {
+	var ignore *helpers.GitIgnorePy
+	file := ".gitignore"
+	fileManager.CreateFile(rootDir, file)
+	switch appType {
+	case "mvc":
+		fileManager.WriteFile(rootDir, file, ignore.GitIgnoreMvc())
+	case "api":
+		fileManager.WriteFile(rootDir, file, ignore.GitIgnoreAPI())
 	}
 }
 
@@ -50,6 +59,7 @@ func (python *PythonProject) GenerateMain(rootDir string, appType string) {
 }
 
 func (python *PythonProject) GenerateModels(rootDir string) {
+	var model *pythonsamples.Model
 	modelsFolder := rootDir+"/models"
 	roleFile := "role.py"
 	userFile := "user.py"
@@ -68,6 +78,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 }
 
 func (python *PythonProject) GenerateStaticFiles(rootDir string) {
+	var staticFile *pythonsamples.StaticFile
 	staticCss := rootDir+"/static/css"
 	staticJs := rootDir+"/static/js"
 	staticImgs := rootDir+"/static/images"
@@ -83,6 +94,7 @@ func (python *PythonProject) GenerateStaticFiles(rootDir string) {
 }
 
 func (python *PythonProject) GenerateMvcControllers(rootDir string) {
+	var mvcController *pythonsamples.MvcController
 	controllersFolder := rootDir+"/controllers"
 	roleFile := "role_controller.py"
 	userFile := "user_controller.py"
@@ -100,6 +112,7 @@ func (python *PythonProject) GenerateMvcControllers(rootDir string) {
 }
 
 func (python *PythonProject) GenerateApiControllers(rootDir string) {
+	var apiController *pythonsamples.ApiController
 	apiControllersFolder := rootDir+"/api_controllers"
 	roleFile := "role_api.py"
 	userFile := "user_api.py"
@@ -160,8 +173,10 @@ func (python *PythonProject) CreateApp(appName string, appType string, db string
 	case "postgres":
 		python.GeneratePostgresDB(appName)
 	}
+	fileManager.CreateFolder(appName+"/uploads")
 	python.GenerateConfig(appName, db)
 	python.GenerateRequirements(appName, db)
 	python.GenerateMain(appName, appType)
 	python.GenerateReadme(appName, db, appType)
+	python.GenerateGitIgnore(appName, appType)
 }
