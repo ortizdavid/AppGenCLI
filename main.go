@@ -46,5 +46,6 @@ func main() {
 		} else {
 			project.Generate(appName, lang, appType, db)
 		}
+		
 	}
 }

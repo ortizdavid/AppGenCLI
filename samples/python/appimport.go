@@ -25,7 +25,7 @@ func (imp* AppImport) ImportForTaskController() string  {
 return `from config import *
 from models.user import User
 from models.task import TaskModel
-from flask import render_template, request, redirect, url_for`
+from flask import render_template, request, redirect, url_for, session`
 }
 
 func (imp* AppImport) ImportForAuthController() string  {

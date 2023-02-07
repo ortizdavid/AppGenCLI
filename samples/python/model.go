@@ -13,13 +13,15 @@ class User(db.Model):
 
 	user_id = db.Column(db.Integer, primary_key=True)
 	role_id = db.Column(db.Integer)
-	user_name = db.Column(db.String(100))
+	user_name = db.Column(db.String(150))
 	password = db.Column(db.String(100))
+	image = db.Column(db.String(100))
 
-	def __init__(self, role_id, user_name, password):
+	def __init__(self, role_id, user_name, password, image):
 		self.user_name = user_name
 		self.password = password
 		self.role_id = role_id
+		self.image = image
 	`+model.SaveAndDelete()+`
 	@classmethod
 	def exists(cls, user_name, password):
@@ -56,7 +58,8 @@ class User(db.Model):
 			"user_id": self.user_id,
 			"user_name": self.user_name,
 			"password": self.password,
-			"role_id": self.role_id
+			"role_id": self.role_id,
+			"image": self.image
 		}`
 }
 
@@ -70,12 +73,16 @@ class Task(db.Model):
 	task_id = db.Column(db.Integer, primary_key=True)
 	user_id = db.Column(db.Integer)
 	task_name = db.Column(db.String(100))
+	start_date = db.Column(db.Date)
+	end_date = db.Column(db.Date)
 	description = db.Column(db.String(300))
 
-	def __init__(self, user_id, task_name, description):
+	def __init__(self, user_id, task_name, start_date, end_date, description):
 		self.task_name = task_name
 		self.description = description
 		self.user_id = user_id
+		self.start_date = start_date
+		self.end_date = end_date
 	`+model.SaveAndDelete()+`
 	@classmethod
 	def exists(cls, user_id, task_name):
@@ -102,6 +109,8 @@ class Task(db.Model):
 			"task_id": self.task_id,
 			"user_id": self.user_id,
 			"task_name": self.task_name,
+			"start_date": self.start_date,
+			"end_date": self.end_date,
 			"description": self.description
 		}`
 }

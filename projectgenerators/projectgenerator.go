@@ -14,6 +14,7 @@ type IGenerator interface {
 	GenerateStaticFiles(rootDir string)
 	GenerateApiControllers(rootDir string)
 	GenerateMvcControllers(rootDir string)
+	GenerateHelpers(rootDir string)
 	GenerateMySqlDB(rootDir string)
 	GeneratePostgresDB(rootDir string)
 	InstallDeps(rootDir string)
@@ -24,7 +25,7 @@ type IGenerator interface {
 
 type ProjectGenerator struct {}
 
-func (project *ProjectGenerator) Generate(appName string, lang string, appType string, db string)  {
+func (project *ProjectGenerator) Generate(appName string, lang string, appType string, db string) {
 	fmt.Printf(helpers.CREATING_PROJECT, appName)
 
 	switch lang {

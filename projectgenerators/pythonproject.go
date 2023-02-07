@@ -135,6 +135,18 @@ func (python *PythonProject) GenerateApiControllers(rootDir string) {
 	pyFileManager.WriteFile(apiControllersFolder, authFile, apiController.AuthApiController())
 }
 
+func (python *PythonProject) GenerateHelpers(rootDir string) {
+	var helper *pythonsamples.Helper
+	helpersFolder := rootDir+"/helpers"
+	httpFile := "http_code.py"
+	constFile := "constants.py"
+	pyFileManager.CreateFolderAll(helpersFolder)
+	pyFileManager.CreateFile(helpersFolder, httpFile)
+	pyFileManager.CreateFile(helpersFolder, constFile)
+	pyFileManager.WriteFile(helpersFolder, httpFile, helper.HttpCodes())
+	pyFileManager.WriteFile(helpersFolder, constFile, helper.Constants())
+}
+
 func (python *PythonProject) GenerateMySqlDB(rootDir string) {
 	var mysql *dbsamples.MySqlDB
 	dbDir := rootDir+"/database"
