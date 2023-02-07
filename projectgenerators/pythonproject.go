@@ -195,11 +195,12 @@ func (python *PythonProject) CreateApp(appName string, appType string, db string
 			python.GeneratePostgresDB(appName)
 		}
 		python.GenerateModels(appName)
-		pyFileManager.CreateFolder(appName+"/uploads")
 		python.GenerateConfig(appName, db)
 		python.GenerateRequirements(appName, db)
 		python.GenerateMain(appName, appType)
 		python.GenerateReadme(appName, db, appType)
 		python.GenerateGitIgnore(appName, appType)
+		pyFileManager.CreateFolderAll(appName+"/uploads/imgs")
+		pyFileManager.CreateFolderAll(appName+"/uploads/docs")
 	}
 }

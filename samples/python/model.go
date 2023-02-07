@@ -4,6 +4,7 @@ type Model struct {}
 
 var modelImport *AppImport
 
+
 func (model *Model) UserModel()  string {
 return ``+modelImport.ImportForUserModel()+`
 
@@ -22,7 +23,9 @@ class User(db.Model):
 		self.password = password
 		self.role_id = role_id
 		self.image = image
+		
 	`+model.SaveAndDelete()+`
+
 	@classmethod
 	def exists(cls, user_name, password):
 		return bool(cls.query.filter_by(user_name=user_name, password=password).first())
@@ -32,7 +35,7 @@ class User(db.Model):
 		return cls.query.filter_by(user_id=id).first()
 
 	@classmethod
-	def get_all(cls, id):
+	def get_all(cls):
 		return cls.query.fetchall()
 
 	@classmethod
@@ -47,7 +50,7 @@ class User(db.Model):
 
 	@classmethod
 	def get_data_by_id(cls, id):
-		return engine.execute("SELECT * FROM view_user_data WHERE user_id = {id};").first()
+		return engine.execute(f"SELECT * FROM view_user_data WHERE user_id = {id};").first()
 
 	@classmethod
 	def get_all_data(cls):
@@ -62,6 +65,7 @@ class User(db.Model):
 			"image": self.image
 		}`
 }
+
 
 func (model *Model) TaskModel()  string {
 return ``+modelImport.ImportForAllModels()+`
@@ -83,7 +87,9 @@ class Task(db.Model):
 		self.user_id = user_id
 		self.start_date = start_date
 		self.end_date = end_date
+
 	`+model.SaveAndDelete()+`
+
 	@classmethod
 	def exists(cls, user_id, task_name):
 		return bool(cls.query.filter_by(user_id=user_id, task_name=task_name).first())
@@ -93,12 +99,12 @@ class Task(db.Model):
 		return cls.query.filter_by(task_id=id).first()
 
 	@classmethod
-	def get_all(cls, id):
+	def get_all(cls):
 		return cls.query.fetchall()
 
 	@classmethod
 	def get_data_by_id(cls, id):
-		return engine.execute("SELECT * FROM view_user_tasks WHERE user_id = {id};").first()
+		return engine.execute(f"SELECT * FROM view_user_tasks WHERE user_id = {id};").first()
 
 	@classmethod
 	def get_all_data(cls):
@@ -114,6 +120,7 @@ class Task(db.Model):
 			"description": self.description
 		}`
 }
+
 
 func (model *Model) RoleModel()  string {
 return ``+modelImport.ImportForAllModels()+`
@@ -139,7 +146,7 @@ class Role(db.Model):
 		return cls.query.filter_by(role_id=id).first()
 
 	@classmethod
-	def get_all(cls, id):
+	def get_all(cls):
 		return cls.query.all()
 
 	def to_json(self):
@@ -148,6 +155,7 @@ class Role(db.Model):
 			"role_name": self.role_name
 		}`
 }
+
 
 func (model *Model) SaveAndDelete() string {
 return `

@@ -12,12 +12,16 @@ func (imp* AppImport) ImportForAllModels() string  {
 return `from config import db, engine`
 }
 
-func (imp* AppImport) ImportForAllControllers() string  {
-return `from config import db, engine`
+func (imp* AppImport) ImportForRoleController() string  {
+return `from config import *
+from models.role import Role
+from models.user import User
+from flask import render_template, request, redirect, url_for`
 }
 
 func (imp* AppImport) ImportForUserModel() string  {
-return `from flask import session
+return `from config import *
+from flask import session
 from config import db, engine`
 }
 
@@ -28,11 +32,13 @@ from models.task import TaskModel
 from flask import render_template, request, redirect, url_for, session`
 }
 
+
 func (imp* AppImport) ImportForAuthController() string  {
 return `from config import *
 from models.user import User
 from flask import render_template, request, redirect, url_for, session`
 }
+
 
 func (imp* AppImport) ImportForUserController() string  {
 return `import os
@@ -41,6 +47,7 @@ from models.user import User
 from werkzeug.utils import secure_filename
 from flask import render_template, request, redirect, flash, url_for`
 }
+
 
 func (imp* AppImport) ImportForMvcApp() string  {
 return `from config import *

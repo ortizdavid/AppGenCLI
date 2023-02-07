@@ -11,65 +11,107 @@ class TaskController:
 	pass`
 }
 
+
 func (mvc * MvcController) UserController()  string {
 return ``+mvcImport.ImportForUserController()+`
 
 class UserController:
-	pass`
+
+	@app.route('/users', methods=['GET'])
+	def show_users():
+		users = User.get_all()
+		num_rows = len(users)
+		return render_template('user/show.html', users=users, num_rows=num_rows, logged_user=User.get_logged_user())
+
+	@app.route('/users/<id>/details', methods=['GET'])
+	def user_details(id):
+		user = User.get_data_by_id(id)
+		if user:
+			return render_template('user/details.html', user=user, logged_user=User.get_logged_user())
+		else:
+			return render_template('errorr/404.html')
+
+	@app.route(f'/dados-pessoais', methods=['GET'])
+	def get_personal_data():
+		logged_user = User.obter_logged_user()
+		data = User.get_by_id(logged_user.user_id)
+		return render_template('user/dados_pessoais.html', data=data, logged_user=logged_user)
+
+	@app.route('/users/add', methods=['GET', 'POST'])
+	def add_user():
+		if request.method == 'GET': 
+			return render_template('user/add.html', logged_user=User.get_logged_user())
+		else:
+			user_name = request.form['user_name']
+			password = request.form['password']
+			role_id = request.form['role_id']
+			file = request.form['image']
+			image = secure_filename(file.filename)
+			file.save(os.path.join(UPLOAD_DIR_IMGS, image))
+			user = User(role_id, user_name, password, image)
+			user.save()
+			return redirect(url_for('show_users'))
+
+	@app.user('/users/<id>/edit', methods=['GET', 'POST'])
+	def edit_user(id):
+		user = User.get_by_id(id)
+		if request.method == 'GET': 
+			return render_template('user/edit.html', logged_user=User.get_logged_user())
+		else:
+			user_name = request.form['user_name']
+			password = request.form['password']
+			role_id = request.form['role_id']
+			image = user.image
+			new_user = User(role_id, user_name, password, image)
+			new_user.save()
+			return redirect(url_for('show_users'))
+
+	@app.route('/users/search', methods=['GET', 'POST'])
+	def search_user():
+		if request.method == 'GET': 
+			return render_template('user/search.html',logged_user=User.get_logged_user())
+		else:
+			value = request.form['search_value']
+			res = User.search(value)
+			num_rows =  len(res)
+			return render_template('user/search-results.html', value=value, results=res, 
+					num_rows=num_rows, logged_user=User.get_logged_user())`
 }
 
+
 func (mvc * MvcController) RoleController()  string {
-return ``+mvcImport.ImportForAllControllers()+`
+return ``+mvcImport.ImportForRoleController()+`
 
 class RoleController:
 
-	'''@app.route(f'/empresas', methods=['GET'])
-	def listar_empresas():
-		empresas = Empresa.obter_todos()
-		qtd = len(empresas)
-		return render_template('empresa/listar.html', lista_empresas=empresas, num_registos=qtd,
-			usuario_logado=Usuario.obter_usuario_logado())
+	@app.route('/roles', methods=['GET'])
+	def show_roles():
+		roles = Role.get_all()
+		num_rows = len(roles)
+		return render_template('role/show.html', roles=roles, num_rows=num_rows, logged_user=User.get_logged_user())
 
-
-	@app.route(f'/empresas/<id>/detalhes', methods=['GET'])
-	def detalhes_empresa(id):
-		empresa = Empresa.obter_por_unique_id(id)
-		if empresa:
-			return render_template('empresa/detalhes.html', empresa=empresa, usuario_logado=Usuario.obter_usuario_logado())
+	@app.route('/roles/<id>/details', methods=['GET'])
+	def role_details(id):
+		role = Role.get_data_by_id(id)
+		if role:
+			return render_template('role/details.html', role=role, logged_user=User.get_logged_user())
 		else:
-			return render_template('erro/404.html')
+			return render_template('error/404.html')
 
-
-	@app.route(f'/empresas/registar', methods=['GET', 'POST'])
-	def registar_empresa():
+	@app.route('/roles/add', methods=['GET', 'POST'])
+	def add_role():
 		if request.method == 'GET': 
-			return render_template('empresa/registar.html', usuario_logado=Usuario.obter_usuario_logado())
-		
-		nome_empresa = request.form['nome_empresa']
-		nif = request.form['nif']
-		telefone = request.form['telefone']
-		email = request.form['email']
-		empresa = Empresa(nome_empresa, nif)
-		empresa.salvar()
-		contacto = ContactoEmpresa(empresa.id_empresa, telefone, email)
-		contacto.salvar()
-		return redirect(url_for('listar_empresas'))
-
-
-	@app.route(f'/empresas/pesquisar', methods=['GET', 'POST'])
-	def pesquisar_empresas():
-		if request.method == 'GET': 
-			return render_template('empresa/pesquisar.html',usuario_logado=Usuario.obter_usuario_logado())
+			return render_template('role/add.html', logged_user=User.get_logged_user())
 		else:
-			valor = request.form['valor_pesquisa']
-			res = Empresa.buscar(valor)
-			num_registos =  len(res)
-			return render_template('empresa/resultado-pesquisa.html', param=valor, resultados=res, 
-					num_registos=num_registos, usuario_logado=Usuario.obter_usuario_logado())'''`
+			role_name = request.form['role_name']
+			role = Role(role_name)
+			role.save()
+			return redirect(url_for('show_roles'))`
 }
 
+
 func (mvc * MvcController) AuthController()  string {
-return ``+mvcImport.ImportForTaskController()+`
+return ``+mvcImport.ImportForAuthController()+`
 
 class AuthController:
 
