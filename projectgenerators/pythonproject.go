@@ -12,13 +12,16 @@ import (
 
 type PythonProject struct {}
 
+
 var pyFileManager *filemanager.FileManager
 var pyImport *pythonsamples.AppImport
+
 
 func (python *PythonProject) GetProjectTypes() []string {
 	types := [] string {"api", "mvc"}
 	return types
 }
+
 
 func (python *PythonProject) GenerateConfig(rootDir string, db string) {
 	var config *pythonsamples.ConfigPy
@@ -27,6 +30,7 @@ func (python *PythonProject) GenerateConfig(rootDir string, db string) {
 	pyFileManager.WriteFile(rootDir, file, pyImport.ImportForConfig())
 	pyFileManager.WriteFile(rootDir, file, config.CreateConfig(db))
 }
+
 
 func (python *PythonProject) GenerateReadme(rootDir string, db string, appType string) {
 	var readme *helpers.ReadMePy
@@ -40,6 +44,7 @@ func (python *PythonProject) GenerateReadme(rootDir string, db string, appType s
 	}
 }
 
+
 func (python *PythonProject) GenerateGitIgnore(rootDir string, appType string) {
 	var ignore *helpers.GitIgnorePy
 	file := ".gitignore"
@@ -52,6 +57,7 @@ func (python *PythonProject) GenerateGitIgnore(rootDir string, appType string) {
 	}
 }
 
+
 func (python *PythonProject) GenerateMain(rootDir string, appType string) {
 	file := "main.py"
 	pyFileManager.CreateFile(rootDir, file)
@@ -63,6 +69,48 @@ func (python *PythonProject) GenerateMain(rootDir string, appType string) {
 	}
 	pyFileManager.WriteFile(rootDir, file, pyImport.AppMainCode())
 }
+
+
+func (python *PythonProject) GenerateMySqlDB(rootDir string) {
+	var mysql *dbsamples.MySqlDB
+	dbDir := rootDir+"/database"
+	file := "db_task.sql"
+	pyFileManager.CreateFolderAll(dbDir)
+	pyFileManager.CreateFile(dbDir, file)
+	pyFileManager.WriteFile(dbDir, file, mysql.GetDatabaseScript())
+}
+
+
+func (python *PythonProject) GeneratePostgresDB(rootDir string) {
+	var postgres *dbsamples.PostgresDB
+	dbDir := rootDir+"/database"
+	file := "db_task.sql"
+	pyFileManager.CreateFolderAll(dbDir)
+	pyFileManager.CreateFile(dbDir, file)
+	pyFileManager.WriteFile(dbDir, file, postgres.GetDatabaseScript())
+}
+
+
+func (python *PythonProject) GenerateRequirements(rootDir string, db string) {
+	var deps *scripts.PythonDeps
+	file := "requirements.txt"
+	pyFileManager.CreateFile(rootDir, file)
+	pyFileManager.WriteFile(rootDir, file, deps.Requirements(db))
+}
+
+
+func (python *PythonProject) GenerateHelpers(rootDir string) {
+	var helper *pythonsamples.Helper
+	helpersFolder := rootDir+"/helpers"
+	httpFile := "http_code.py"
+	constFile := "constants.py"
+	pyFileManager.CreateFolderAll(helpersFolder)
+	pyFileManager.CreateFile(helpersFolder, httpFile)
+	pyFileManager.CreateFile(helpersFolder, constFile)
+	pyFileManager.WriteFile(helpersFolder, httpFile, helper.HttpCodes())
+	pyFileManager.WriteFile(helpersFolder, constFile, helper.Constants())
+}
+
 
 func (python *PythonProject) GenerateModels(rootDir string) {
 	var model *pythonsamples.Model
@@ -79,9 +127,6 @@ func (python *PythonProject) GenerateModels(rootDir string) {
 	pyFileManager.WriteFile(modelsFolder, taskFile, model.TaskModel())
 }
 
-func (python *PythonProject) GenerateViews(rootDir string) {
-	pyFileManager.CreateFolderAll(rootDir+"/templates")
-}
 
 func (python *PythonProject) GenerateStaticFiles(rootDir string) {
 	var staticFile *pythonsamples.StaticFile
@@ -98,6 +143,7 @@ func (python *PythonProject) GenerateStaticFiles(rootDir string) {
 	pyFileManager.WriteFile(staticCss, cssFile, staticFile.CssContent())
 	pyFileManager.WriteFile(staticJs, jsFile, staticFile.JsContent())
 }
+
 
 func (python *PythonProject) GenerateMvcControllers(rootDir string) {
 	var mvcController *pythonsamples.MvcController
@@ -117,6 +163,7 @@ func (python *PythonProject) GenerateMvcControllers(rootDir string) {
 	pyFileManager.WriteFile(controllersFolder, authFile, mvcController.AuthController())
 }
 
+
 func (python *PythonProject) GenerateApiControllers(rootDir string) {
 	var apiController *pythonsamples.ApiController
 	apiControllersFolder := rootDir+"/api_controllers"
@@ -135,42 +182,50 @@ func (python *PythonProject) GenerateApiControllers(rootDir string) {
 	pyFileManager.WriteFile(apiControllersFolder, authFile, apiController.AuthApiController())
 }
 
-func (python *PythonProject) GenerateHelpers(rootDir string) {
-	var helper *pythonsamples.Helper
-	helpersFolder := rootDir+"/helpers"
-	httpFile := "http_code.py"
-	constFile := "constants.py"
-	pyFileManager.CreateFolderAll(helpersFolder)
-	pyFileManager.CreateFile(helpersFolder, httpFile)
-	pyFileManager.CreateFile(helpersFolder, constFile)
-	pyFileManager.WriteFile(helpersFolder, httpFile, helper.HttpCodes())
-	pyFileManager.WriteFile(helpersFolder, constFile, helper.Constants())
+
+func (python *PythonProject) GenerateViews(rootDir string) {
+	templatesFolder := rootDir+"/templates"
+	authFolder := templatesFolder+"/auth"
+	userFolder := templatesFolder+"/user"
+	taskFolder := templatesFolder+"/task"
+	roleFolder := templatesFolder+"/role"
+	errorFolder := templatesFolder+"/error"
+	
+	loginFile := "login.html"
+	homeFile := "home.html"
+	err404File := "404.html"
+	/*
+	userAddFile := "add.html"
+	userEditFile := "edit.html"
+	userDataFile := "user-data.html"
+	userSearchFile := "search.html"
+	userShowFile := "show.html"
+	userDetailsFile := "details.html"
+
+	taskAddFile := "add.html"
+	taskEditFile := "edit.html"
+	taskShowFile := "show.html"
+	taskSearchFile := "search.html"
+	taskDetailsFile := "details.html"
+
+	roleAddFile := "add.html"
+	roleShowFile := "show.html"
+	roleDetailsFile := "details.html"*/
+
+	pyFileManager.CreateFolderAll(templatesFolder)
+	pyFileManager.CreateFolderAll(authFolder)
+	pyFileManager.CreateFolderAll(userFolder)
+	pyFileManager.CreateFolderAll(roleFolder)
+	pyFileManager.CreateFolderAll(taskFolder)
+	pyFileManager.CreateFolderAll(errorFolder)
+
+	pyFileManager.CreateFile(authFolder, loginFile)
+	pyFileManager.CreateFile(authFolder, homeFile)
+	pyFileManager.CreateFile(errorFolder, err404File)
+
+
 }
 
-func (python *PythonProject) GenerateMySqlDB(rootDir string) {
-	var mysql *dbsamples.MySqlDB
-	dbDir := rootDir+"/database"
-	file := "db_task.sql"
-	pyFileManager.CreateFolderAll(dbDir)
-	pyFileManager.CreateFile(dbDir, file)
-	pyFileManager.WriteFile(dbDir, file, mysql.GetDatabaseScript())
-}
-
-func (python *PythonProject) GeneratePostgresDB(rootDir string) {
-	var postgres *dbsamples.PostgresDB
-	dbDir := rootDir+"/database"
-	file := "db_task.sql"
-	pyFileManager.CreateFolderAll(dbDir)
-	pyFileManager.CreateFile(dbDir, file)
-	pyFileManager.WriteFile(dbDir, file, postgres.GetDatabaseScript())
-}
-
-func (python *PythonProject) GenerateRequirements(rootDir string, db string) {
-	var deps *scripts.PythonDeps
-	file := "requirements.txt"
-	pyFileManager.CreateFile(rootDir, file)
-	pyFileManager.WriteFile(rootDir, file, deps.Requirements(db))
-}
 
 func (python *PythonProject) CreateApp(appName string, appType string, db string) {
 

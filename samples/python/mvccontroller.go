@@ -2,7 +2,9 @@ package pythonsamples
 
 type MvcController struct {}
 
+
 var mvcImport *AppImport
+
 
 func (mvc * MvcController) TaskController()  string {
 return ``+mvcImport.ImportForTaskController()+`
@@ -32,10 +34,10 @@ class UserController:
 			return render_template('errorr/404.html')
 
 	@app.route(f'/dados-pessoais', methods=['GET'])
-	def get_personal_data():
+	def get_user_data():
 		logged_user = User.obter_logged_user()
 		data = User.get_by_id(logged_user.user_id)
-		return render_template('user/dados_pessoais.html', data=data, logged_user=logged_user)
+		return render_template('user/user-data.html', data=data, logged_user=logged_user)
 
 	@app.route('/users/add', methods=['GET', 'POST'])
 	def add_user():

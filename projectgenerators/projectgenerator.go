@@ -25,6 +25,7 @@ type IGenerator interface {
 
 type ProjectGenerator struct {}
 
+
 func (project *ProjectGenerator) Generate(appName string, lang string, appType string, db string) {
 	fmt.Printf(helpers.CREATING_PROJECT, appName)
 
@@ -35,15 +36,18 @@ func (project *ProjectGenerator) Generate(appName string, lang string, appType s
 	}
 }
 
+
 func (project *ProjectGenerator) GetCommands() []string {
 	commands := [] string {"-name", "-lang", "-type", "-db"}
 	return commands
 }
 
+
 func (project *ProjectGenerator) GetDatabases() []string {
 	databases := [] string {"postgres", "mysql"}
 	return databases
 }
+
 
 func (project *ProjectGenerator) GetLanguages() []string {
 	languages := [] string {"python"}

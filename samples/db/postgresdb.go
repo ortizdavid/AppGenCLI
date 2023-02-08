@@ -2,11 +2,13 @@ package dbsamples
 
 type PostgresDB struct {}
 
+
 func (pg *PostgresDB) CreateDatabase() string {
 return `-- CREATING AND SELECT DATABASE
 CREATE DATABASE db_task;
 \c db_task;`
 }
+
 
 func (pg *PostgresDB) CreateTables() string {
 return `-- CREATING TABLES ASNF TYPES
@@ -44,6 +46,7 @@ CREATE TABLE IF NOT EXISTS tasks (
 );`
 }
 
+
 func (pg *PostgresDB) CreateSQLViews() string {
 return `-- CREATING VIEW view_user_tasks
 DROP VIEW IF EXISTS view_user_tasks;
@@ -78,6 +81,7 @@ INSERT INTO roles (role_name) VALUES ('admin');
 INSERT INTO roles (role_name) VALUES ('normal');`
 }
 
+
 func (pg *PostgresDB) InsertUsers() string {
 return `INSERT INTO users (user_name, password, role_id) VALUES ('admin01', '12345678', 1);
 INSERT INTO users (user_name, password, role_id) VALUES ('user01', '12345678', 2);
@@ -85,6 +89,7 @@ INSERT INTO users (user_name, password, role_id) VALUES ('user02', '12345678', 2
 INSERT INTO users (user_name, password, role_id) VALUES ('user04', '12345678', 2);
 INSERT INTO users (user_name, password, role_id) VALUES ('user05', '12345678', 2);`
 }
+
 
 func (pg *PostgresDB) InsertTasks() string {
 return `INSERT INTO tasks (task_name, description, start_date, end_date, user_id) VALUES ('Read a Book', 'Reading a programming book', '2022-12-18', 2023-02-04, 2);

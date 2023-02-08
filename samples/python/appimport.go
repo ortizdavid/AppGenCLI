@@ -2,15 +2,18 @@ package pythonsamples
 
 type AppImport struct {}
 
+
 func (imp* AppImport) ImportForConfig() string  {
 return `from flask import Flask
 from sqlalchemy import create_engine
 from flask_sqlalchemy import SQLAlchemy`
 }
 
+
 func (imp* AppImport) ImportForAllModels() string  {
 return `from config import db, engine`
 }
+
 
 func (imp* AppImport) ImportForRoleController() string  {
 return `from config import *
@@ -19,11 +22,13 @@ from models.user import User
 from flask import render_template, request, redirect, url_for`
 }
 
+
 func (imp* AppImport) ImportForUserModel() string  {
 return `from config import *
 from flask import session
 from config import db, engine`
 }
+
 
 func (imp* AppImport) ImportForTaskController() string  {
 return `from config import *
@@ -60,6 +65,7 @@ from controllers import (
 `
 }
 
+
 func (imp* AppImport) ImportForRestApi() string  {
 return `from flask import jsonify, render_template
 from config import *
@@ -70,6 +76,7 @@ from api_controllers import (
 )
 `
 }
+
 
 func (imp* AppImport) AppMainCode() string {
 return `
