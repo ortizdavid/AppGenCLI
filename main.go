@@ -7,6 +7,7 @@ import (
 	"github.com/ortizdavid/appgen/helpers"
 )
 
+
 func main() {
 	var cliArgs = os.Args;
 	var lenArgs = len(cliArgs)

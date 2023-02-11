@@ -35,6 +35,12 @@ func (fm *FileManager) CreateFile(dirName string, fileName string) {
 	}
 }
 
+func (fm *FileManager) CreateFileAll(dirName string, files ...string) {
+	for _, file := range files {
+		fm.CreateFile(dirName, file)
+	}
+}
+
 func (fm *FileManager) MoveFile(fileName string, origin string, destination string) {
 	err := os.Rename(origin +"/"+ fileName, destination +"/"+ fileName)
 	if err != nil {

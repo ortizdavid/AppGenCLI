@@ -23,6 +23,39 @@ func (python *PythonProject) GetProjectTypes() []string {
 }
 
 
+func (python *PythonProject) CreateApp(appName string, appType string, db string) {
+
+	if helpers.Contains(python.GetProjectTypes(), appType) == false {
+		fmt.Printf(helpers.PROJECT_ERROR)
+		fmt.Printf(helpers.UNSUPORTED_TYPE, appType, "Python")
+		helpers.ListLanguages()
+
+	} else {
+		switch appType {
+		case "mvc":
+			python.GenerateViews(appName)
+			python.GenerateStaticFiles(appName)
+			python.GenerateMvcControllers(appName)
+		case "api":
+			python.GenerateApiControllers(appName)
+		}
+		switch db {
+		case "mysql":
+			python.GenerateMySqlDB(appName)
+		case "postgres":
+			python.GeneratePostgresDB(appName)
+		}
+		python.GenerateModels(appName)
+		python.GenerateConfig(appName, db)
+		python.GenerateRequirements(appName, db)
+		python.GenerateMain(appName, appType)
+		python.GenerateReadme(appName, db, appType)
+		python.GenerateGitIgnore(appName, appType)
+		pyFileManager.CreateFolderAll(appName+"/uploads/imgs")
+		pyFileManager.CreateFolderAll(appName+"/uploads/docs")
+	}
+}
+
 func (python *PythonProject) GenerateConfig(rootDir string, db string) {
 	var config *pythonsamples.ConfigPy
 	file := "config.py"
@@ -184,17 +217,31 @@ func (python *PythonProject) GenerateApiControllers(rootDir string) {
 
 
 func (python *PythonProject) GenerateViews(rootDir string) {
+
+	var layout *pythonsamples.Layout
+	var perr *pythonsamples.PageError
+	var auth *pythonsamples.AuthTemplate
+	var user *pythonsamples.UserTemplate
+	var task *pythonsamples.TaskTemplate
+	var role *pythonsamples.RoleTemplate
+
 	templatesFolder := rootDir+"/templates"
+	layoutsFolder := templatesFolder+"/layouts"
+	errorFolder := templatesFolder+"/error"
 	authFolder := templatesFolder+"/auth"
 	userFolder := templatesFolder+"/user"
 	taskFolder := templatesFolder+"/task"
 	roleFolder := templatesFolder+"/role"
-	errorFolder := templatesFolder+"/error"
 	
+	backLayoutFile := "front-layout.html"
+	frontLayoutFile := "back-layout.html"
+	normalMenuFile := "normal-menu.html"
+	adminMenuFile := "admin-menu.html"
+
 	loginFile := "login.html"
 	homeFile := "home.html"
 	err404File := "404.html"
-	/*
+	
 	userAddFile := "add.html"
 	userEditFile := "edit.html"
 	userDataFile := "user-data.html"
@@ -210,52 +257,46 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 
 	roleAddFile := "add.html"
 	roleShowFile := "show.html"
-	roleDetailsFile := "details.html"*/
+	roleDetailsFile := "details.html"
 
 	pyFileManager.CreateFolderAll(templatesFolder)
+	pyFileManager.CreateFolderAll(layoutsFolder)
 	pyFileManager.CreateFolderAll(authFolder)
 	pyFileManager.CreateFolderAll(userFolder)
 	pyFileManager.CreateFolderAll(roleFolder)
 	pyFileManager.CreateFolderAll(taskFolder)
 	pyFileManager.CreateFolderAll(errorFolder)
-
-	pyFileManager.CreateFile(authFolder, loginFile)
-	pyFileManager.CreateFile(authFolder, homeFile)
+	
 	pyFileManager.CreateFile(errorFolder, err404File)
+	pyFileManager.CreateFileAll(authFolder, loginFile, homeFile)
+	pyFileManager.CreateFileAll(layoutsFolder, frontLayoutFile, backLayoutFile, normalMenuFile, adminMenuFile)
+	pyFileManager.CreateFileAll(roleFolder, roleAddFile, roleShowFile, roleDetailsFile)
+	pyFileManager.CreateFileAll(taskFolder, taskAddFile, taskEditFile, taskSearchFile, taskShowFile, taskDetailsFile)
+	pyFileManager.CreateFileAll(userFolder, userAddFile, userEditFile, userDataFile, userSearchFile, userShowFile, userSearchFile, userDetailsFile)
 
+	pyFileManager.WriteFile(errorFolder, err404File, perr.Error404())
+	pyFileManager.WriteFile(layoutsFolder, frontLayoutFile, layout.FontLayout())
+	pyFileManager.WriteFile(layoutsFolder, backLayoutFile, layout.BackLayout())
+	pyFileManager.WriteFile(layoutsFolder, adminMenuFile, layout.AdminMenu())
+	pyFileManager.WriteFile(layoutsFolder, normalMenuFile, layout.NormalMenu())
 
-}
+	pyFileManager.WriteFile(authFolder, loginFile, auth.LoginTemplate())
+	pyFileManager.WriteFile(authFolder, homeFile, auth.HomeTemplate())
 
+	pyFileManager.WriteFile(userFolder, userAddFile, user.AddTemplate())
+	pyFileManager.WriteFile(userFolder, userEditFile, user.EditTemplate())
+	pyFileManager.WriteFile(userFolder, userShowFile, user.ShowTemplate())
+	pyFileManager.WriteFile(userFolder, userDetailsFile, user.DetailsTemplate())
+	pyFileManager.WriteFile(userFolder, userSearchFile, user.SearchTemplate())
+	pyFileManager.WriteFile(userFolder, userDataFile, user.UserDataTemplate())
 
-func (python *PythonProject) CreateApp(appName string, appType string, db string) {
+	pyFileManager.WriteFile(taskFolder, taskAddFile, task.AddTemplate())
+	pyFileManager.WriteFile(taskFolder, taskEditFile, task.EditTemplate())
+	pyFileManager.WriteFile(taskFolder, taskShowFile, task.ShowTemplate())
+	pyFileManager.WriteFile(taskFolder, taskSearchFile, task.SearchTemplate())
+	pyFileManager.WriteFile(taskFolder, taskDetailsFile, task.DetailsTemplate())
 
-	if helpers.Contains(python.GetProjectTypes(), appType) == false {
-		fmt.Printf(helpers.PROJECT_ERROR)
-		fmt.Printf(helpers.UNSUPORTED_TYPE, appType, "Python")
-		helpers.ListLanguages()
-
-	} else {
-		switch appType {
-		case "mvc":
-			python.GenerateViews(appName)
-			python.GenerateStaticFiles(appName)
-			python.GenerateMvcControllers(appName)
-		case "api":
-			python.GenerateApiControllers(appName)
-		}
-		switch db {
-		case "mysql":
-			python.GenerateMySqlDB(appName)
-		case "postgres":
-			python.GeneratePostgresDB(appName)
-		}
-		python.GenerateModels(appName)
-		python.GenerateConfig(appName, db)
-		python.GenerateRequirements(appName, db)
-		python.GenerateMain(appName, appType)
-		python.GenerateReadme(appName, db, appType)
-		python.GenerateGitIgnore(appName, appType)
-		pyFileManager.CreateFolderAll(appName+"/uploads/imgs")
-		pyFileManager.CreateFolderAll(appName+"/uploads/docs")
-	}
+	pyFileManager.WriteFile(roleFolder, roleAddFile, role.AddTemplate())
+	pyFileManager.WriteFile(taskFolder, roleDetailsFile, role.DetailsTemplate())
+	pyFileManager.WriteFile(taskFolder, roleShowFile, role.ShowTemplate())
 }

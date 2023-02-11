@@ -28,7 +28,7 @@ func Commands() {
 	fmt.Println("COMANDS:")
 	fmt.Println("\tappgen\t\tFirst command")
 	fmt.Println("\thelp\t\tShows helps for appgen")
-	fmt.Println("\texamples\t\tShows Examples")
+	fmt.Println("\texamples\tShows Examples")
 	fmt.Println("\tusage\t\tShows Usage of appgen")
 	fmt.Println("\tauthor\t\tShows all author information")
 	fmt.Println("\tlist-langs\tList all supported languages and applications")
@@ -42,15 +42,15 @@ func Commands() {
 func Usage() {
 	fmt.Println("USAGE:")
 	fmt.Println("\tFor create an Application:")
-	fmt.Println("\t\tappgen -name <app name> -lang <language> -type <type of project> -db <database or dbms>")
-	fmt.Println("\tForHelp and Examples:")
+	fmt.Println("\tappgen -name <app name> -lang <language> -type <type of project> -db <database or dbms>")
+	fmt.Println("\tFor Help and Examples:")
 	fmt.Println("\t\tappgen <command>")
 	fmt.Println()
 }
 
 func Examples() {
 	fmt.Println("EXAMPLES:")
-	fmt.Println("\tappgen -name PythonMVC -lang python -type mvc -db mysql\t\tCreates a MVC App with Python and MySQL")
+	fmt.Println("\tappgen -name PythonMVC -lang python -type mvc -db mysql\t\t\t\tCreates a MVC App with Python and MySQL")
 	fmt.Println("\tappgen -name PythonAPI -lang python -type api -db postgres\t\tCreates an API with Python and Postgres")
 	fmt.Println("\tappgen help\t\t\t\t\t\t\t\tShows help comands")
 	fmt.Println("\tappgen list-langs\t\t\t\t\t\t\tLists all suportded languages")
