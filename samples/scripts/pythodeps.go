@@ -33,7 +33,7 @@ func (pyd * PythonDeps) Requirements(db string) string {
 	var dbDep string
 	switch db {
 	case "mysql":
-		dbDep = "pymysql"
+		dbDep = "MySQL\npymysql"
 	case "postgres":	
 		dbDep = "psycopg2"
 	}

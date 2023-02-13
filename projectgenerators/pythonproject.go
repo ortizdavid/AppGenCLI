@@ -281,6 +281,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	loginFile := "login.html"
 	homeFile := "home.html"
 	err404File := "404.html"
+	err404MenuFile := "404-menu.html"
 	
 	userAddFile := "add.html"
 	userEditFile := "edit.html"
@@ -310,7 +311,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	pyFileManager.CreateFolderAll(taskFolder)
 	pyFileManager.CreateFolderAll(errorFolder)
 	
-	pyFileManager.CreateFile(errorFolder, err404File)
+	pyFileManager.CreateFileAll(errorFolder, err404File, err404MenuFile)
 	pyFileManager.CreateFile(frontFolder, indexFile)
 	pyFileManager.CreateFileAll(authFolder, loginFile, homeFile)
 	pyFileManager.CreateFileAll(layoutsFolder, frontLayoutFile, backLayoutFile, normalMenuFile, adminMenuFile)
@@ -327,6 +328,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	pyFileManager.WriteFile(authFolder, loginFile, auth.LoginTemplate(rootDir))
 	pyFileManager.WriteFile(authFolder, homeFile, auth.HomeTemplate(rootDir))
 	pyFileManager.WriteFile(errorFolder, err404File, perr.Error404())
+	pyFileManager.WriteFile(errorFolder, err404MenuFile, perr.Error404Menu())
 
 	pyFileManager.WriteFile(userFolder, userAddFile, user.AddTemplate())
 	pyFileManager.WriteFile(userFolder, userEditFile, user.EditTemplate())
