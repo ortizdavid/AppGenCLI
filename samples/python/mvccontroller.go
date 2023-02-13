@@ -10,7 +10,61 @@ func (mvc * MvcController) TaskController()  string {
 return ``+mvcImport.ImportForTaskController()+`
 
 class TaskController:
-	pass`
+
+	@app.route('/tasks', methods=['GET'])
+	def show_tasks():
+		tasks = Task.get_all_data()
+		num_rows = len(tasks)
+		return render_template('task/show.html', tasks=tasks, num_rows=num_rows, logged_user=User.get_logged_user())
+
+	@app.route('/tasks/<id>/details', methods=['GET'])
+	def task_details(id):
+		task = task.get_data_by_id(id)
+		if task:
+			return render_template('task/details.html', task=task, logged_user=User.get_logged_user())
+		else:
+			return render_template('errorr/404.html')
+
+	@app.route('/task/add', methods=['GET', 'POST'])
+	def add_task():
+		logged_user=User.get_logged_user()
+		if request.method == 'GET': 
+			return render_template('task/add.html', logged_user=logged_user)
+		else:
+			task_name = request.form['task_name']
+			start_date = request.form['start_date']
+			end_date = request.form['end_date']
+			description = request.form['description']
+			user_id = logged_user.user_id
+			task = Task(user_id, task_name, start_date, end_date, description)
+			task.save()
+			return redirect(url_for('show_tasks'))
+
+	@app.route('/task/<id>/edit', methods=['GET', 'POST'])
+	def edit_task(id):
+		task = Task.get_by_id(id)
+		logged_user=User.get_logged_user()
+		if request.method == 'GET': 
+			return render_template('task/edit.html', task=task, logged_user=logged_user)
+		else:
+			task_name = request.form['task_name']
+			start_date = request.form['start_date']
+			end_date = request.form['end_date']
+			description = request.form['description']
+			user_id = logged_user.user_id
+			new_task = Task(user_id, task_name, start_date, end_date, description)
+			return redirect(url_for('show_users'))
+
+	@app.route('/task/search', methods=['GET', 'POST'])
+	def search_task():
+		if request.method == 'GET': 
+			return render_template('task/search.html',logged_user=User.get_logged_user())
+		else:
+			value = request.form['search_value']
+			res = Task.search(value)
+			num_rows =  len(res)
+			return render_template('task/search-results.html', value=value, results=res, 
+					num_rows=num_rows, logged_user=User.get_logged_user())`
 }
 
 
@@ -21,7 +75,7 @@ class UserController:
 
 	@app.route('/users', methods=['GET'])
 	def show_users():
-		users = User.get_all()
+		users = User.get_all_data()
 		num_rows = len(users)
 		return render_template('user/show.html', users=users, num_rows=num_rows, logged_user=User.get_logged_user())
 
@@ -33,7 +87,7 @@ class UserController:
 		else:
 			return render_template('errorr/404.html')
 
-	@app.route(f'/dados-pessoais', methods=['GET'])
+	@app.route(f'/user-data', methods=['GET'])
 	def get_user_data():
 		logged_user = User.obter_logged_user()
 		data = User.get_by_id(logged_user.user_id)
@@ -54,7 +108,7 @@ class UserController:
 			user.save()
 			return redirect(url_for('show_users'))
 
-	@app.user('/users/<id>/edit', methods=['GET', 'POST'])
+	@app.route('/users/<id>/edit', methods=['GET', 'POST'])
 	def edit_user(id):
 		user = User.get_by_id(id)
 		if request.method == 'GET': 
@@ -112,12 +166,11 @@ class RoleController:
 }
 
 
-func (mvc * MvcController) AuthController()  string {
+func (mvc *MvcController) AuthController()  string {
 return ``+mvcImport.ImportForAuthController()+`
 
 class AuthController:
 
-	@app.route('/', methods=['GET'])
 	@app.route('/login', methods=['GET', 'POST'])
 	def login():
 		if request.method == 'GET':
@@ -140,4 +193,16 @@ class AuthController:
 	@app.route('/home', methods=['GET'])
 	def home():
 		return render_template('auth/home.html', logged_user=User.get_logged_user())`
+}
+
+
+func (mvc *MvcController) FrontController() string {
+return `from config import *
+from flask import render_template
+
+class FrontController:
+
+	@app.route('/', methods=['GET'])
+	def index():
+		return render_template('front/index.html')`
 }

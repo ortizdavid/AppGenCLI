@@ -33,8 +33,8 @@ from config import db, engine`
 func (imp* AppImport) ImportForTaskController() string  {
 return `from config import *
 from models.user import User
-from models.task import TaskModel
-from flask import render_template, request, redirect, url_for, session`
+from models.task import Task
+from flask import render_template, request, redirect, url_for`
 }
 
 
@@ -60,7 +60,8 @@ from flask import jsonify, render_template
 from controllers import (
 	user_controller,
 	auth_controller,
-	task_controller
+	task_controller,
+	front_controller
 )
 `
 }

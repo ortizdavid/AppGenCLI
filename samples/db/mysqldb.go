@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS users (
 	user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	user_name VARCHAR(50) NOT NULL UNIQUE,
 	password VARCHAR(100) NOT NULL,
+	image VARCHAR(100),
 	role_id INT NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -92,9 +93,9 @@ INSERT INTO users (user_name, password, role_id) VALUES ('user05', '12345678', 2
 
 
 func (my *MySqlDB) InsertTasks() string {
-return `INSERT INTO tasks (task_name, description, start_date, end_date, user_id) VALUES ('Read a Book', 'Reading a programming book', '2022-12-18', 2023-02-04, 2);
-INSERT INTO tasks (task_name, description, start_date, end_date, user_id) VALUES ('Make a Lunch', 'Reading a programming book', '2022-09-18', 2022-12-24, 3);
-INSERT INTO tasks (task_name, description, start_date, end_date, user_id) VALUES ('Walk in the moon', 'Walking with my dog every day, at 6 AM', '2023-02-01', 2023-02-01, 4);
+return `INSERT INTO tasks (task_name, description, start_date, end_date, user_id) VALUES ('Read a Book', 'Reading a programming book', '2022-12-18', '2023-02-04', 2);
+INSERT INTO tasks (task_name, description, start_date, end_date, user_id) VALUES ('Make a Lunch', 'Reading a programming book', '2022-09-18', '2022-12-24', 3);
+INSERT INTO tasks (task_name, description, start_date, end_date, user_id) VALUES ('Walk in the moon', 'Walking with my dog every day, at 6 AM', '2023-02-01', '2023-02-01', 4);
 INSERT INTO tasks (task_name, description, start_date, end_date, user_id) VALUES ('Send an email', 'Send an email to recruites', '2023-01-18', '2023-01-18', 5);`
 }
 

@@ -1,4 +1,4 @@
-package pythonsamples
+package libs
 
 type StaticFile struct {}
 

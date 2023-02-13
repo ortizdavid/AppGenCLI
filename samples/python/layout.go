@@ -3,9 +3,48 @@ package pythonsamples
 type Layout struct {}
 
 
-func (l *Layout) AdminMenu() string  {
+func (l *Layout) Header(appName string)  string {
+return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+        <link href="{{url_for('static', filename = 'css/style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename = 'lib/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+        <title>`+appName+` - {% block title %}{% endblock %}</title>
+    {% endblock %}        
+</head>
+<body style="background-color: hsl(233, 44%, 96%);">`
+}
+
+func (l *Layout) Footer(appName string)  string {
 return `
-<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <div id="footer" class="footer">
+        {% block footer %}
+            <div align="center">
+               `+appName+` &copy; Copyright 2022 
+            </div>
+        {% endblock %}
+    </div>
+    <script src="{{url_for('static', filename = 'js/script.js')}}"></script>
+    <script src="{{url_for('static', filename = 'js/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename = 'lib/bootstrap/js/bootstrap.min.js')}}"></script>
+</body>
+</html>`
+}
+
+
+func (l *Layout) BlockContent() string {
+return `<div id="content" class="container">
+        <br><br><br>
+        {% block content %}
+        
+        {% endblock %} 
+    </div>`
+}
+
+
+func (l *Layout) AdminMenu() string  {
+return `<nav class="navbar navbar-expand-lg navbar-light bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand" href="/" style="color: white">
             Admin
@@ -38,14 +77,12 @@ return `
             </ul>
         </div>
     </div>
-</nav>
-`
+</nav>`
 }
 
 
 func (l *Layout) NormalMenu() string  {
-return `
-<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+return `<nav class="navbar navbar-expand-lg navbar-light bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand" href="/" style="color: white">
             Normal
@@ -78,22 +115,56 @@ return `
             </ul>
         </div>
     </div>
-</nav>
-`
+</nav>`
 }
 
 
-func (l *Layout) FontLayout() string  {
-return `
-
-`
+func (l *Layout) FontLayout(appName string) string  {
+return ``+l.Header(appName)+`
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/" style="color: white">
+                Flask MVC
+            </a>
+          <button class="navbar-toggler" type="button">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+              <li class="nav-item">
+                <a href="/"  class="nav-link active" aria-current="page"style="color: white">
+                    Home
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/register" class="nav-link" style="color: white">
+                    Register
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/login" class="nav-link" style="color: white">
+                    Login
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+    `+l.BlockContent()+`
+    `+l.Footer(appName)+``
 }
-    
 
 
-func (l *Layout) BackLayout() string  {
-return `
-
-`
+func (l *Layout) BackLayout(appName string) string  {
+return ``+l.Header(appName)+`
+    <!-- MENU ACCORDING USER ROLE -->
+    {% if logged_user == 'admin' %}
+        {% include 'layouts/admin_menu.html == 'normal' %}
+    {% elif logged_user == 'normal' %}
+        {% include 'layouts/normal_menu.html' %}
+    {% else %}
+        {% include 'error/404.html' %}
+    {% endif %}
+`+l.Footer(appName)+``
 }
 

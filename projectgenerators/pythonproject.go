@@ -6,6 +6,7 @@ import (
 	"github.com/ortizdavid/appgen/filemanager"
 	"github.com/ortizdavid/appgen/helpers"
 	dbsamples "github.com/ortizdavid/appgen/samples/db"
+	"github.com/ortizdavid/appgen/samples/libs"
 	pythonsamples "github.com/ortizdavid/appgen/samples/python"
 	"github.com/ortizdavid/appgen/samples/scripts"
 )
@@ -15,6 +16,7 @@ type PythonProject struct {}
 
 var pyFileManager *filemanager.FileManager
 var pyImport *pythonsamples.AppImport
+var readme *helpers.ReadMePy
 
 
 func (python *PythonProject) GetProjectTypes() []string {
@@ -51,9 +53,22 @@ func (python *PythonProject) CreateApp(appName string, appType string, db string
 		python.GenerateMain(appName, appType)
 		python.GenerateReadme(appName, db, appType)
 		python.GenerateGitIgnore(appName, appType)
-		pyFileManager.CreateFolderAll(appName+"/uploads/imgs")
-		pyFileManager.CreateFolderAll(appName+"/uploads/docs")
+		python.GenerateUploadsDir(appName)
+		fmt.Printf(helpers.PROJECT_CREATED, appName)
+		python.PrintInstructions(appName)
 	}
+}
+
+
+func (python *PythonProject) GenerateUploadsDir(rootDir string) {
+	pyFileManager.CreateFolderAll(rootDir+"/uploads/imgs")
+	pyFileManager.CreateFolderAll(rootDir+"/uploads/docs")
+}
+
+
+func (python *PythonProject) PrintInstructions(appName string) {
+
+	fmt.Println(readme.InstrunctionsBeforeRun(appName))
 }
 
 func (python *PythonProject) GenerateConfig(rootDir string, db string) {
@@ -66,7 +81,6 @@ func (python *PythonProject) GenerateConfig(rootDir string, db string) {
 
 
 func (python *PythonProject) GenerateReadme(rootDir string, db string, appType string) {
-	var readme *helpers.ReadMePy
 	file := "README.md"
 	pyFileManager.CreateFile(rootDir, file)
 	switch appType {
@@ -92,7 +106,7 @@ func (python *PythonProject) GenerateGitIgnore(rootDir string, appType string) {
 
 
 func (python *PythonProject) GenerateMain(rootDir string, appType string) {
-	file := "main.py"
+	file := "app.py"
 	pyFileManager.CreateFile(rootDir, file)
 	switch appType {
 	case "mvc":
@@ -162,19 +176,39 @@ func (python *PythonProject) GenerateModels(rootDir string) {
 
 
 func (python *PythonProject) GenerateStaticFiles(rootDir string) {
-	var staticFile *pythonsamples.StaticFile
+	var staticFile *libs.StaticFile
+	var bootstrap *libs.BootstrapLib
+	var jquery *libs.JqueryLib
+
 	staticCss := rootDir+"/static/css"
 	staticJs := rootDir+"/static/js"
 	staticImgs := rootDir+"/static/images"
+	staticLibBootstrapCss := rootDir+"/static/lib/bootstrap/css"
+	staticLibBootstrapJs := rootDir+"/static/lib/bootstrap/css"
+	staticLibJquery := rootDir+"/static/lib/jquery"
+	
 	jsFile := "script.js"
 	cssFile := "style.css"
+	bootstrapCssFile := "bootstrap.min.css"
+	bootstrapJsFile := "bootstrap.min.js"
+	jqueryJsFile := "jquery.min.js"
+
 	pyFileManager.CreateFolderAll(staticCss)
 	pyFileManager.CreateFolderAll(staticJs)
 	pyFileManager.CreateFolderAll(staticImgs)
+	pyFileManager.CreateFolderAll(staticLibBootstrapCss)
+	pyFileManager.CreateFolderAll(staticLibBootstrapJs)
+	pyFileManager.CreateFolderAll(staticLibJquery)
 	pyFileManager.CreateFile(staticCss, cssFile)
 	pyFileManager.CreateFile(staticJs, jsFile)
+	pyFileManager.CreateFile(staticLibBootstrapCss, bootstrapCssFile)
+	pyFileManager.CreateFile(staticLibBootstrapJs, bootstrapJsFile)
+	pyFileManager.CreateFile(staticLibJquery, jqueryJsFile)
 	pyFileManager.WriteFile(staticCss, cssFile, staticFile.CssContent())
 	pyFileManager.WriteFile(staticJs, jsFile, staticFile.JsContent())
+	pyFileManager.WriteFile(staticLibBootstrapCss, bootstrapCssFile, bootstrap.BootstrapMinCss())
+	pyFileManager.WriteFile(staticLibBootstrapJs, bootstrapJsFile, bootstrap.BootstrapMinJs())
+	pyFileManager.WriteFile(staticLibJquery, jqueryJsFile, jquery.JqueryMinJs())
 }
 
 
@@ -185,15 +219,18 @@ func (python *PythonProject) GenerateMvcControllers(rootDir string) {
 	userFile := "user_controller.py"
 	taskFile := "task_controller.py"
 	authFile := "auth_controller.py"
+	frontFile := "front_controller.py"
 	pyFileManager.CreateFolderAll(controllersFolder)
 	pyFileManager.CreateFile(controllersFolder, roleFile)
 	pyFileManager.CreateFile(controllersFolder, taskFile)
 	pyFileManager.CreateFile(controllersFolder, userFile)
 	pyFileManager.CreateFile(controllersFolder, authFile)
+	pyFileManager.CreateFile(controllersFolder, frontFile)
 	pyFileManager.WriteFile(controllersFolder, roleFile, mvcController.RoleController())
 	pyFileManager.WriteFile(controllersFolder, userFile, mvcController.UserController())
 	pyFileManager.WriteFile(controllersFolder, taskFile, mvcController.TaskController())
 	pyFileManager.WriteFile(controllersFolder, authFile, mvcController.AuthController())
+	pyFileManager.WriteFile(controllersFolder, frontFile, mvcController.FrontController())
 }
 
 
@@ -220,6 +257,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 
 	var layout *pythonsamples.Layout
 	var perr *pythonsamples.PageError
+	var front *pythonsamples.FrontTemplate
 	var auth *pythonsamples.AuthTemplate
 	var user *pythonsamples.UserTemplate
 	var task *pythonsamples.TaskTemplate
@@ -228,16 +266,18 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	templatesFolder := rootDir+"/templates"
 	layoutsFolder := templatesFolder+"/layouts"
 	errorFolder := templatesFolder+"/error"
+	frontFolder := templatesFolder+"/front"
 	authFolder := templatesFolder+"/auth"
 	userFolder := templatesFolder+"/user"
 	taskFolder := templatesFolder+"/task"
 	roleFolder := templatesFolder+"/role"
 	
-	backLayoutFile := "front-layout.html"
-	frontLayoutFile := "back-layout.html"
+	backLayoutFile := "back-layout.html"
+	frontLayoutFile := "front-layout.html"
 	normalMenuFile := "normal-menu.html"
 	adminMenuFile := "admin-menu.html"
 
+	indexFile := "index.html"
 	loginFile := "login.html"
 	homeFile := "home.html"
 	err404File := "404.html"
@@ -246,6 +286,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	userEditFile := "edit.html"
 	userDataFile := "user-data.html"
 	userSearchFile := "search.html"
+	userSearchResultsFile := "search-results.html"
 	userShowFile := "show.html"
 	userDetailsFile := "details.html"
 
@@ -253,6 +294,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	taskEditFile := "edit.html"
 	taskShowFile := "show.html"
 	taskSearchFile := "search.html"
+	taskSearchResultsFile := "search-results.html"
 	taskDetailsFile := "details.html"
 
 	roleAddFile := "add.html"
@@ -261,6 +303,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 
 	pyFileManager.CreateFolderAll(templatesFolder)
 	pyFileManager.CreateFolderAll(layoutsFolder)
+	pyFileManager.CreateFolderAll(frontFolder)
 	pyFileManager.CreateFolderAll(authFolder)
 	pyFileManager.CreateFolderAll(userFolder)
 	pyFileManager.CreateFolderAll(roleFolder)
@@ -268,32 +311,36 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	pyFileManager.CreateFolderAll(errorFolder)
 	
 	pyFileManager.CreateFile(errorFolder, err404File)
+	pyFileManager.CreateFile(frontFolder, indexFile)
 	pyFileManager.CreateFileAll(authFolder, loginFile, homeFile)
 	pyFileManager.CreateFileAll(layoutsFolder, frontLayoutFile, backLayoutFile, normalMenuFile, adminMenuFile)
 	pyFileManager.CreateFileAll(roleFolder, roleAddFile, roleShowFile, roleDetailsFile)
-	pyFileManager.CreateFileAll(taskFolder, taskAddFile, taskEditFile, taskSearchFile, taskShowFile, taskDetailsFile)
-	pyFileManager.CreateFileAll(userFolder, userAddFile, userEditFile, userDataFile, userSearchFile, userShowFile, userSearchFile, userDetailsFile)
+	pyFileManager.CreateFileAll(taskFolder, taskAddFile, taskEditFile, taskSearchFile, taskSearchResultsFile, taskShowFile, taskDetailsFile)
+	pyFileManager.CreateFileAll(userFolder, userAddFile, userEditFile, userDataFile, userSearchFile, userSearchResultsFile, userShowFile, userSearchFile, userDetailsFile)
 
-	pyFileManager.WriteFile(errorFolder, err404File, perr.Error404())
-	pyFileManager.WriteFile(layoutsFolder, frontLayoutFile, layout.FontLayout())
-	pyFileManager.WriteFile(layoutsFolder, backLayoutFile, layout.BackLayout())
+	pyFileManager.WriteFile(layoutsFolder, frontLayoutFile, layout.FontLayout(rootDir))
+	pyFileManager.WriteFile(layoutsFolder, backLayoutFile, layout.BackLayout(rootDir))
 	pyFileManager.WriteFile(layoutsFolder, adminMenuFile, layout.AdminMenu())
 	pyFileManager.WriteFile(layoutsFolder, normalMenuFile, layout.NormalMenu())
 
-	pyFileManager.WriteFile(authFolder, loginFile, auth.LoginTemplate())
-	pyFileManager.WriteFile(authFolder, homeFile, auth.HomeTemplate())
+	pyFileManager.WriteFile(frontFolder, indexFile, front.IndexTemplate())
+	pyFileManager.WriteFile(authFolder, loginFile, auth.LoginTemplate(rootDir))
+	pyFileManager.WriteFile(authFolder, homeFile, auth.HomeTemplate(rootDir))
+	pyFileManager.WriteFile(errorFolder, err404File, perr.Error404())
 
 	pyFileManager.WriteFile(userFolder, userAddFile, user.AddTemplate())
 	pyFileManager.WriteFile(userFolder, userEditFile, user.EditTemplate())
 	pyFileManager.WriteFile(userFolder, userShowFile, user.ShowTemplate())
 	pyFileManager.WriteFile(userFolder, userDetailsFile, user.DetailsTemplate())
 	pyFileManager.WriteFile(userFolder, userSearchFile, user.SearchTemplate())
+	pyFileManager.WriteFile(userFolder, userSearchResultsFile, user.SearchResultsTemplate())
 	pyFileManager.WriteFile(userFolder, userDataFile, user.UserDataTemplate())
 
 	pyFileManager.WriteFile(taskFolder, taskAddFile, task.AddTemplate())
 	pyFileManager.WriteFile(taskFolder, taskEditFile, task.EditTemplate())
 	pyFileManager.WriteFile(taskFolder, taskShowFile, task.ShowTemplate())
 	pyFileManager.WriteFile(taskFolder, taskSearchFile, task.SearchTemplate())
+	pyFileManager.WriteFile(taskFolder, taskSearchResultsFile, task.SearchResultsTemplate())
 	pyFileManager.WriteFile(taskFolder, taskDetailsFile, task.DetailsTemplate())
 
 	pyFileManager.WriteFile(roleFolder, roleAddFile, role.AddTemplate())

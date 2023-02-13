@@ -2,7 +2,7 @@ package helpers
 
 const (
 	CREATING_PROJECT string = "\nCreating Project '%s'\n"
-	PROJECT_CREATED string = "\nProject Created Successfully\n"
+	PROJECT_CREATED string = "\n\nProject '%s' Created Successfully! \n"
 	PROJECT_ERROR string = "\nError while creating project\n"
 	INVALID_COMMAND string = "\nInvalid Command. Check help"
 	UNSUPORTED_LANGUAGE string = "\nUnsuported Language '%s'"

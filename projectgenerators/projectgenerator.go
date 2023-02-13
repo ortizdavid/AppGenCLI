@@ -17,6 +17,7 @@ type IGenerator interface {
 	GenerateHelpers(rootDir string)
 	GenerateMySqlDB(rootDir string)
 	GeneratePostgresDB(rootDir string)
+	GenerateUploadsDir(rootDir string)
 	InstallDeps(rootDir string)
 	GenerateReadme(rootDir string, db string, appType string)
 	GenerateGitIgnore(rootDir string, appType string)

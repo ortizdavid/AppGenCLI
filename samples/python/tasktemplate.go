@@ -32,6 +32,15 @@ return`
 }
 
 
+
+
+func (task *TaskTemplate) SearchResultsTemplate() string {
+return`
+
+` 
+}
+
+
 func (task *TaskTemplate) DetailsTemplate() string {
 return`
 

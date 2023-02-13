@@ -32,6 +32,13 @@ return`
 }
 
 
+func (user *UserTemplate) SearchResultsTemplate() string {
+return`
+
+` 
+}
+
+
 func (user *UserTemplate) DetailsTemplate() string {
 return`
 

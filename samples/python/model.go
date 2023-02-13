@@ -2,7 +2,6 @@ package pythonsamples
 
 type Model struct {}
 
-
 var modelImport *AppImport
 
 
@@ -24,7 +23,6 @@ class User(db.Model):
 		self.password = password
 		self.role_id = role_id
 		self.image = image
-		
 	`+model.SaveAndDelete()+`
 
 	@classmethod
@@ -37,7 +35,7 @@ class User(db.Model):
 
 	@classmethod
 	def get_all(cls):
-		return cls.query.fetchall()
+		return cls.query.all()
 
 	@classmethod
 	def get_logged_user(cls):
@@ -50,12 +48,18 @@ class User(db.Model):
 		return engine.execute(f"SELECT * FROM view_user_data WHERE user_name = '{user_name}' AND password='{password}';").first()
 
 	@classmethod
+	def search(cls, value):
+		return engine.execute(f"SELECT * FROM view_user_data WHERE user_id = {value}"+	
+								f" OR user_name = '{value}'"+
+								f" OR role_name = '{value}'").fetchall()
+
+	@classmethod
 	def get_data_by_id(cls, id):
 		return engine.execute(f"SELECT * FROM view_user_data WHERE user_id = {id};").first()
 
 	@classmethod
 	def get_all_data(cls):
-		return engine.execute("SELECT * FROM view_user_data;").all()
+		return engine.execute("SELECT * FROM view_user_data;").fetchall()
 
 	def to_json(self):
 		return {
@@ -88,7 +92,6 @@ class Task(db.Model):
 		self.user_id = user_id
 		self.start_date = start_date
 		self.end_date = end_date
-
 	`+model.SaveAndDelete()+`
 
 	@classmethod
@@ -101,7 +104,13 @@ class Task(db.Model):
 
 	@classmethod
 	def get_all(cls):
-		return cls.query.fetchall()
+		return cls.query.all()
+
+	@classmethod
+	def search(cls, value):
+		return engine.execute(f"SELECT * FROM view_user_tasks WHERE user_id = {value}"+	
+								f" OR user_name = '{value}'"+
+								f" OR task_name = '{value}'").fetchall()
 
 	@classmethod
 	def get_data_by_id(cls, id):
@@ -109,7 +118,7 @@ class Task(db.Model):
 
 	@classmethod
 	def get_all_data(cls):
-		return engine.execute("SELECT * FROM view_user_tasks;").all()
+		return engine.execute("SELECT * FROM view_user_tasks;").fetchall()
 
 	def to_json(self):
 		return {
