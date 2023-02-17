@@ -17,8 +17,7 @@ return `<!DOCTYPE html>
 }
 
 func (l *Layout) Footer(appName string)  string {
-return `
-    <div id="footer" class="footer">
+return `<div id="footer" class="footer">
         {% block footer %}
             <div align="center">
                `+appName+` &copy; Copyright 2022 
@@ -46,7 +45,7 @@ return `<div id="content" class="container">
 func (l *Layout) AdminMenu() string  {
 return `<nav class="navbar navbar-expand-lg navbar-light bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/" style="color: white">
+        <a class="navbar-brand" href="/home" style="color: white">
             Admin
         </a>
         <button class="navbar-toggler" type="button">
@@ -56,17 +55,17 @@ return `<nav class="navbar navbar-expand-lg navbar-light bg-primary">
             <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
                     <a href="/home"  class="nav-link active" aria-current="page"style="color: white">
-                        Home  |
+                        Home  
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/users" class="nav-link" style="color: white">
-                        Users |
+                        Users 
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/tasks" class="nav-link" style="color: white">
-                        Tasks |
+                        Tasks 
                     </a>
                 </li>
                 <li class="nav-item">
@@ -84,7 +83,7 @@ return `<nav class="navbar navbar-expand-lg navbar-light bg-primary">
 func (l *Layout) NormalMenu() string  {
 return `<nav class="navbar navbar-expand-lg navbar-light bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/" style="color: white">
+        <a class="navbar-brand" href="/home" style="color: white">
             Normal
         </a>
         <button class="navbar-toggler" type="button">
@@ -94,17 +93,17 @@ return `<nav class="navbar navbar-expand-lg navbar-light bg-primary">
             <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                 <li class="nav-item">
                     <a href="/home"  class="nav-link active" aria-current="page"style="color: white">
-                        Home |
+                        Home 
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/user-data" class="nav-link" style="color: white">
-                        My Data |
+                        My Data 
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/tasks" class="nav-link" style="color: white">
-                        My Tasks |
+                        My Tasks 
                     </a>
                 </li>
                 <li class="nav-item">
@@ -158,13 +157,14 @@ return ``+l.Header(appName)+`
 func (l *Layout) BackLayout(appName string) string  {
 return ``+l.Header(appName)+`
     <!-- MENU ACCORDING USER ROLE -->
-    {% if logged_user == 'admin' %}
-        {% include 'layouts/admin_menu.html == 'normal' %}
-    {% elif logged_user == 'normal' %}
-        {% include 'layouts/normal_menu.html' %}
+    {% if logged_user.role_name == 'admin' %}
+        {% include 'layouts/admin-menu.html' %}
+    {% elif logged_user.role_name == 'normal' %}
+        {% include 'layouts/normal-menu.html' %}
     {% else %}
-        {% include 'error/404.html' %}
+        {% include 'error/404-menu.html' %}
     {% endif %}
+    `+l.BlockContent()+`
 `+l.Footer(appName)+``
 }
 

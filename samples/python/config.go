@@ -34,6 +34,9 @@ DB_NAME = "`+dbName+`"
 DB_URI = f"{RDMS}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 APP_PORT = "5000"
+APP_ROOT = f"localhost:{APP_PORT}"
+API_ROOT = "/api"
+
 UPLOAD_DIR_IMGS = "uploads/imgs"
 UPLOAD_DIR_DOCS = "uploads/docs"
 

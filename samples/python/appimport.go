@@ -3,6 +3,18 @@ package pythonsamples
 type AppImport struct {}
 
 
+func (imp *AppImport) ParticularImport(appType string) string {
+	var strImport string
+	switch appType {
+	case "mvc":
+		strImport = "from flask import render_template, request, redirect, url_for"
+	case "api":
+		strImport = "from flask import jsonify, request\nfrom helpers.http_code import *"
+	}
+	return strImport
+}
+
+
 func (imp* AppImport) ImportForConfig() string  {
 return `from flask import Flask
 from sqlalchemy import create_engine
@@ -11,46 +23,50 @@ from flask_sqlalchemy import SQLAlchemy`
 
 
 func (imp* AppImport) ImportForAllModels() string  {
-return `from config import db, engine`
-}
-
-
-func (imp* AppImport) ImportForRoleController() string  {
-return `from config import *
-from models.role import Role
-from models.user import User
-from flask import render_template, request, redirect, url_for`
+return `from config import db, engine
+from sqlalchemy import text`
 }
 
 
 func (imp* AppImport) ImportForUserModel() string  {
 return `from config import *
+from sqlalchemy import text
 from flask import session
 from config import db, engine`
 }
 
 
-func (imp* AppImport) ImportForTaskController() string  {
+
+func (imp* AppImport) ImportForRoleController(appType string) string  {
+return `from config import *
+from models.role import Role
+from models.user import User
+`+imp.ParticularImport(appType)+``
+}
+	
+
+
+func (imp* AppImport) ImportForTaskController(appType string) string  {
 return `from config import *
 from models.user import User
 from models.task import Task
-from flask import render_template, request, redirect, url_for`
+`+imp.ParticularImport(appType)+``
 }
 
 
-func (imp* AppImport) ImportForAuthController() string  {
+func (imp* AppImport) ImportForAuthController(appType string) string  {
 return `from config import *
 from models.user import User
-from flask import render_template, request, redirect, url_for, session`
+`+imp.ParticularImport(appType)+``
 }
 
 
-func (imp* AppImport) ImportForUserController() string  {
+func (imp* AppImport) ImportForUserController(appType string) string  {
 return `import os
 from config import *
 from models.user import User
 from werkzeug.utils import secure_filename
-from flask import render_template, request, redirect, flash, url_for`
+`+imp.ParticularImport(appType)+``
 }
 
 

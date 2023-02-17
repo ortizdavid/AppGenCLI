@@ -12,6 +12,7 @@ return``+layout.Header(appName)+`
 			<div class="login-form bg-light mt-4 p-4">
 				<form action="{{ url_for('login') }}" method="POST" class="row g-3">
 					<h4>Login</h4>
+					{{ error_msg }}
 					<div class="col-12">
 						<label><strong>User Name:</strong> </label>
 						<input type="text" name="user_name" class="form-control" placeholder="User Name">
@@ -46,7 +47,7 @@ return`{% extends "layouts/back-layout.html" %}
 
     <div class="alert alert-info">
         <h5>User: {{ logged_user.user_name}}</h5>
-        <h5>Role: {{ logged_user.role }} </h5>
+        <h5>Role: {{ logged_user.role_name }} </h5>
     </div>
 
 {% endblock %}` 

@@ -56,7 +56,7 @@ SELECT t.task_id, t.task_name,
 	t.description, t.status,
 	t.start_date, t.end_date,
 	t.created_at, t.updated_at,
-	u.user_id AS user_id, u.user_name,
+	u.user_id, u.user_name,
 	r.role_name
 FROM tasks t
 JOIN users u ON(u.user_id = t.user_id)
@@ -66,9 +66,9 @@ ORDER BY t.created_at DESC;
 -- CREATING VIEW view_user_data
 DROP VIEW IF EXISTS view_user_data;
 CREATE VIEW view_user_data AS 
-SELECT u.user_id AS user_id, u.user_name,
-	u.created_at, u.updated_at,
-	r.role_name
+SELECT u.user_id, u.user_name,
+	u.password, u.created_at, 
+	u.updated_at, r.role_name
 FROM users u
 JOIN roles r ON(r.role_id = u.role_id)
 ORDER BY u.created_at DESC;`

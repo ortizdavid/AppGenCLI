@@ -45,21 +45,25 @@ class User(db.Model):
 
 	@classmethod
 	def get_user_data(cls, user_name, password):
-		return engine.execute(f"SELECT * FROM view_user_data WHERE user_name = '{user_name}' AND password='{password}';").first()
+		with engine.connect() as conn:
+			return conn.execute(text(f"SELECT * FROM view_user_data WHERE user_name = '{user_name}' AND password='{password}';")).first()
 
 	@classmethod
 	def search(cls, value):
-		return engine.execute(f"SELECT * FROM view_user_data WHERE user_id = {value}"+	
+		with engine.connect() as conn:
+			return conn.execute(text(f"SELECT * FROM view_user_data WHERE user_id = {value}"+	
 								f" OR user_name = '{value}'"+
-								f" OR role_name = '{value}'").fetchall()
+								f" OR role_name = '{value}'")).fetchall()
 
 	@classmethod
 	def get_data_by_id(cls, id):
-		return engine.execute(f"SELECT * FROM view_user_data WHERE user_id = {id};").first()
+		with engine.connect() as conn:
+			return conn.execute(text(f"SELECT * FROM view_user_data WHERE user_id = {id};")).first()
 
 	@classmethod
 	def get_all_data(cls):
-		return engine.execute("SELECT * FROM view_user_data;").fetchall()
+		with engine.connect() as conn:
+			return conn.execute(text("SELECT * FROM view_user_data;")).fetchall()
 
 	def to_json(self):
 		return {
@@ -97,7 +101,7 @@ class Task(db.Model):
 	@classmethod
 	def exists(cls, user_id, task_name):
 		return bool(cls.query.filter_by(user_id=user_id, task_name=task_name).first())
-
+		
 	@classmethod
 	def get_by_id(cls, id):
 		return cls.query.filter_by(task_id=id).first()
@@ -108,26 +112,35 @@ class Task(db.Model):
 
 	@classmethod
 	def search(cls, value):
-		return engine.execute(f"SELECT * FROM view_user_tasks WHERE user_id = {value}"+	
+		with engine.connect() as conn:
+			return conn.execute(text(f"SELECT * FROM view_user_tasks WHERE user_id = {value}"+	
 								f" OR user_name = '{value}'"+
-								f" OR task_name = '{value}'").fetchall()
+								f" OR role_name = '{value}'")).fetchall()
 
 	@classmethod
 	def get_data_by_id(cls, id):
-		return engine.execute(f"SELECT * FROM view_user_tasks WHERE user_id = {id};").first()
+		with engine.connect() as conn:
+			return conn.execute(text(f"SELECT * FROM view_user_tasks WHERE task_id = {id};")).first()
 
 	@classmethod
 	def get_all_data(cls):
-		return engine.execute("SELECT * FROM view_user_tasks;").fetchall()
+		with engine.connect() as conn:
+			return conn.execute(text("SELECT * FROM view_user_tasks;")).fetchall()
 
 	def to_json(self):
+		task = Task.get_data_by_id(self.task_id)
 		return {
-			"task_id": self.task_id,
-			"user_id": self.user_id,
-			"task_name": self.task_name,
-			"start_date": self.start_date,
-			"end_date": self.end_date,
-			"description": self.description
+			"task_id": task.task_id,
+			"task_name": task.task_name,
+			"description": task.description,
+			"start_date": task.start_date,
+			"end_date": task.end_date,
+			"user_id": task.user_id,
+			"status": task.status,
+			"created_at": task.created_at,
+			"created_at": task.created_at,
+			"user_name": task.user_name,
+			"role_name": task.role_name
 		}`
 }
 

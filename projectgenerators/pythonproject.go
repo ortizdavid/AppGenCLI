@@ -2,7 +2,6 @@ package projectgenerators
 
 import (
 	"fmt"
-
 	"github.com/ortizdavid/appgen/filemanager"
 	"github.com/ortizdavid/appgen/helpers"
 	dbsamples "github.com/ortizdavid/appgen/samples/db"
@@ -48,6 +47,7 @@ func (python *PythonProject) CreateApp(appName string, appType string, db string
 			python.GeneratePostgresDB(appName)
 		}
 		python.GenerateModels(appName)
+		python.GenerateHelpers(appName)
 		python.GenerateConfig(appName, db)
 		python.GenerateRequirements(appName, db)
 		python.GenerateMain(appName, appType)

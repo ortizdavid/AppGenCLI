@@ -7,7 +7,7 @@ var mvcImport *AppImport
 
 
 func (mvc * MvcController) TaskController()  string {
-return ``+mvcImport.ImportForTaskController()+`
+return ``+mvcImport.ImportForTaskController("mvc")+`
 
 class TaskController:
 
@@ -69,7 +69,7 @@ class TaskController:
 
 
 func (mvc * MvcController) UserController()  string {
-return ``+mvcImport.ImportForUserController()+`
+return ``+mvcImport.ImportForUserController("mvc")+`
 
 class UserController:
 
@@ -136,7 +136,7 @@ class UserController:
 
 
 func (mvc * MvcController) RoleController()  string {
-return ``+mvcImport.ImportForRoleController()+`
+return ``+mvcImport.ImportForRoleController("mvc")+`
 
 class RoleController:
 
@@ -167,7 +167,7 @@ class RoleController:
 
 
 func (mvc *MvcController) AuthController()  string {
-return ``+mvcImport.ImportForAuthController()+`
+return ``+mvcImport.ImportForAuthController("mvc")+`
 
 class AuthController:
 
@@ -183,7 +183,7 @@ class AuthController:
 				session['password'] = password
 				return redirect(url_for('home'))
 			else:
-				return redirect(url_for('login'))
+				return redirect(url_for('login', error_msg=error_msg))
 
 	@app.route('/logout', methods=['GET'])
 	def logout():
@@ -204,5 +204,9 @@ class FrontController:
 
 	@app.route('/', methods=['GET'])
 	def index():
+		return render_template('front/index.html')
+
+	@app.route('/register', methods=['GET'])
+	def register():
 		return render_template('front/index.html')`
 }
