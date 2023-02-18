@@ -7,7 +7,7 @@ func (imp *AppImport) ParticularImport(appType string) string {
 	var strImport string
 	switch appType {
 	case "mvc":
-		strImport = "from flask import render_template, request, redirect, url_for"
+		strImport = "from flask import render_template, request, redirect, url_for, session"
 	case "api":
 		strImport = "from flask import jsonify, request\nfrom helpers.http_code import *"
 	}
@@ -40,7 +40,6 @@ from config import db, engine`
 func (imp* AppImport) ImportForRoleController(appType string) string  {
 return `from config import *
 from models.role import Role
-from models.user import User
 `+imp.ParticularImport(appType)+``
 }
 	
@@ -89,7 +88,8 @@ from config import *
 from api_controllers import (
 	user_api,
 	auth_api,
-	task_api
+	task_api,
+	role_api
 )
 `
 }

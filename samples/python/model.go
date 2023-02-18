@@ -96,19 +96,39 @@ class Task(db.Model):
 		self.user_id = user_id
 		self.start_date = start_date
 		self.end_date = end_date
-	`+model.SaveAndDelete()+`
+	
+	def save(self):
+		db.session.add(self)
+		db.session.commit()
+
+	def delete(self):
+		db.session.delete(self)
+		db.session.commit()
 
 	@classmethod
-	def exists(cls, user_id, task_name):
+	def exists(cls, user_id, task_name,):
 		return bool(cls.query.filter_by(user_id=user_id, task_name=task_name).first())
 		
 	@classmethod
 	def get_by_id(cls, id):
 		return cls.query.filter_by(task_id=id).first()
+	
+	@classmethod
+	def get_by_user(cls, user_id):
+		return cls.query.filter_by(user_id=user_id).all()
 
+	@classmethod
+	def get_by_date(cls, start_date, end_date):
+		return cls.query.filter(cls.start_date.between(start_date, end_date)).all()
+	
 	@classmethod
 	def get_all(cls):
 		return cls.query.all()
+
+	@classmethod
+	def get_by_status(cls, status):
+		with engine.connect() as conn:
+			return conn.execute(text(f"SELECT * FROM view_user_tasks WHERE status = '{status}';")).fetchall()
 
 	@classmethod
 	def search(cls, value):

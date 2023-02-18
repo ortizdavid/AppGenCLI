@@ -83,11 +83,11 @@ INSERT INTO roles (role_name) VALUES ('normal');`
 
 
 func (my *MySqlDB) InsertUsers() string {
-return `INSERT INTO users (user_name, password, role_id) VALUES ('admin01', '12345678', 1);
-INSERT INTO users (user_name, password, role_id) VALUES ('user01', '12345678', 2);
-INSERT INTO users (user_name, password, role_id) VALUES ('user02', '12345678', 2);
-INSERT INTO users (user_name, password, role_id) VALUES ('user04', '12345678', 2);
-INSERT INTO users (user_name, password, role_id) VALUES ('user05', '12345678', 2);
+return `INSERT INTO users (user_name, password, role_id) VALUES ('admin', '12345678', 1);
+INSERT INTO users (user_name, password, role_id) VALUES ('user1', '12345678', 2);
+INSERT INTO users (user_name, password, role_id) VALUES ('user2', '12345678', 2);
+INSERT INTO users (user_name, password, role_id) VALUES ('user3', '12345678', 2);
+INSERT INTO users (user_name, password, role_id) VALUES ('user4', '12345678', 2);
 `
 }
 

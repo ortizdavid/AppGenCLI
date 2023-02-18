@@ -53,6 +53,7 @@ class TaskController:
 			description = request.form['description']
 			user_id = logged_user.user_id
 			new_task = Task(user_id, task_name, start_date, end_date, description)
+			new_tsak.save()
 			return redirect(url_for('show_users'))
 
 	@app.route('/task/search', methods=['GET', 'POST'])
@@ -183,7 +184,7 @@ class AuthController:
 				session['password'] = password
 				return redirect(url_for('home'))
 			else:
-				return redirect(url_for('login', error_msg=error_msg))
+				return redirect(url_for('login'))
 
 	@app.route('/logout', methods=['GET'])
 	def logout():
