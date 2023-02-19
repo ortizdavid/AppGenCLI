@@ -45,7 +45,7 @@ class TaskApi:
 			task = Task(user_id, task_name, start_date, end_date, description)
 			task.save()
 		except:
-			return jsonify({'message': 'Erro while adding Task', 'success': False}) , HTTP_CODE_INTERNAL_ERROR
+			return jsonify({'message': 'Error while adding Task', 'success': False}) , HTTP_CODE_INTERNAL_ERROR
 		return jsonify({'data': task.to_json(), 'message': 'Task Added', 'success': True}), HTTP_CODE_CREATED
 
 
@@ -69,7 +69,7 @@ class TaskApi:
 				task.user_id = user_id
 			task.save()
 		except:
-			return jsonify({'message': 'Erro while updating Task', 'success': False}) , HTTP_CODE_INTERNAL_ERROR
+			return jsonify({'message': 'Error while updating Task', 'success': False}) , HTTP_CODE_INTERNAL_ERROR
 		return jsonify({'data': task.to_json(), 'message': 'Task Updated', 'success': True}), HTTP_CODE_CREATED
 
 
@@ -77,7 +77,7 @@ class TaskApi:
 	def delete_task(id):
 		task = Task.get_by_id(id)
 		if task is None:
-			return jsonify({'message': 'Task Not Found', 'success': False}), HTTP_CODE_NOT_FOUND
+			return jsonify({'message': 'Error While Deleting Task', 'success': False}), HTTP_CODE_NOT_FOUND
 		else:
 			task.delete()
 			return jsonify({'message': 'Task Deleted!', 'success': True}), HTTP_CODE_OK
@@ -108,7 +108,75 @@ func (api *ApiController) UserApiController()  string {
 return ``+apiImport.ImportForUserController("api")+`
 
 class UserApi:
-	pass`
+
+	@app.route(f'/{API_ROOT}/users', methods=['GET'])
+	def get_all_users():
+		users = [user.to_json() for user in User.get_all()]
+		num_rows = len(users)
+		if num_rows == 0:
+			return jsonify({'users': users, 'num_rows': num_rows, 'message': 'No Results Found', 'success': False}), HTTP_CODE_NOT_FOUND
+		else:
+			return jsonify({'users': users, 'num_rows': num_rows, 'message': 'Users Found', 'success': True}), HTTP_CODE_OK
+
+
+	@app.route(f'/{API_ROOT}/users/<id>', methods=['GET'])
+	def get_user(id):
+		user = User.get_by_id(id)
+		if user is None:
+			return jsonify({'message': 'User Not found', 'success': False}), HTTP_CODE_NOT_FOUND
+		else:
+			return jsonify({'data': user.to_json(), 'success': True}), HTTP_CODE_OK
+
+
+	@app.route(f'/{API_ROOT}/users', methods=['POST'])
+	def add_user():
+		data = request.get_json()
+		role_id = data['role_id']
+		user_name = data['user_name']
+		password = data['password']
+		image = ""
+
+		if User.exists(user_name):
+			return jsonify({'message': f"User '{user_name}' already exists", 'sucess': False}), HTTP_CODE_BAD_REQUEST
+		try:
+			user = User(role_id, user_name, password, image)
+			user.save()
+		except:
+			return jsonify({'message': 'Error while adding user', 'success': False}) , HTTP_CODE_INTERNAL_ERROR
+		return jsonify({'data': user.to_json(), 'message': 'User Added', 'success': True}), HTTP_CODE_CREATED
+
+
+	@app.route(f'/{API_ROOT}/users/<id>', methods=['PUT'])
+	def edit_user(id):
+		user = User.get_by_id(id)
+		data = request.get_json()
+		data = request.get_json()
+		role_id = data['role_id']
+		user_name = data['user_name']
+		password = data['password']
+		image = ""
+		try:
+			if user is None:
+				user = User(role_id, user_name, password, image)
+			else:
+				user.role_id = role_id
+				user.user_name = user_name
+				user.password = password
+				user.image = image
+			user.save()
+		except:
+			return jsonify({'message': 'Error while updating User', 'success': False}) , HTTP_CODE_INTERNAL_ERROR
+		return jsonify({'data': user.to_json(), 'message': 'User Updated', 'success': True}), HTTP_CODE_CREATED
+
+
+	@app.route(f'/{API_ROOT}/users/<id>', methods=['DELETE'])
+	def delete_user(id):
+		user = User.get_by_id(id)
+		if user is None:
+			return jsonify({'message': 'Error while deleting User', 'success': False}), HTTP_CODE_NOT_FOUND
+		else:
+			user.delete()
+			return jsonify({'message': 'User Deleted!', 'success': True}), HTTP_CODE_OK`
 }
 
 
@@ -181,5 +249,36 @@ func (api *ApiController) AuthApiController()  string {
 return ``+apiImport.ImportForAuthController("api")+`
 
 class AuthApi:
-	pass`
+
+	@app.route(f'/{API_ROOT}/auth/login', methods=['POST'])
+	def login():
+		data = request.get_json()
+		user_name = data['user_name']
+		password = data['password']
+	
+		if(User.exists(user_name, password)):
+			session['user_name'] = user_name
+			session['password'] = password
+			logged_user = User.get_logged_user_basic()
+			return jsonify({'data': logged_user.to_json(), 'message': 'Login Succeeded', 'success': True}), HTTP_CODE_OK
+		else:
+			return jsonify({'message': 'Invalid Username or Password', 'success': False}), HTTP_CODE_NOT_FOUND
+
+
+	@app.route(f'/{API_ROOT}/auth/logout', methods=['GET'])
+	def logout():
+		if 'user_name' in session:
+			session.pop('user_name')
+			return jsonify({'message': 'Logout Succeeded', 'success': True}), HTTP_CODE_OK
+		else:
+			return jsonify({'message': 'Logout Failed', 'success': False}), HTTP_CODE_BAD_REQUEST
+
+
+	@app.route(f'/{API_ROOT}/auth/user', methods=['GET'])
+	def get_current_user():
+		if 'user_name' in session:
+			logged_user = User.get_logged_user_basic()
+			return jsonify({'data': logged_user.to_json(), 'message': 'Logged User Found', 'success': True}), HTTP_CODE_OK
+		else:
+			return jsonify({'message': 'Logged User Not Found', 'success': False}), HTTP_CODE_NOT_FOUND`
 }

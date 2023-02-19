@@ -9,7 +9,7 @@ func (imp *AppImport) ParticularImport(appType string) string {
 	case "mvc":
 		strImport = "from flask import render_template, request, redirect, url_for, session"
 	case "api":
-		strImport = "from flask import jsonify, request\nfrom helpers.http_code import *"
+		strImport = "from helpers.http_code import *\nfrom flask import jsonify, request, session"
 	}
 	return strImport
 }

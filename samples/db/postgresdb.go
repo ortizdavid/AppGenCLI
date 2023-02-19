@@ -68,7 +68,8 @@ DROP VIEW IF EXISTS view_user_data;
 CREATE VIEW view_user_data AS 
 SELECT u.user_id, u.user_name,
 	u.password, u.created_at, 
-	u.updated_at, r.role_name
+	u.updated_at, u.image, 
+	r.role_id, r.role_name
 FROM users u
 JOIN roles r ON(r.role_id = u.role_id)
 ORDER BY u.created_at DESC;`

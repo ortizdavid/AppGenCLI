@@ -23,11 +23,18 @@ class User(db.Model):
 		self.password = password
 		self.role_id = role_id
 		self.image = image
-	`+model.SaveAndDelete()+`
+	
+	def save(self):
+		db.session.add(self)
+		db.session.commit()
+
+	def delete(self):
+		db.session.delete(self)
+		db.session.commit()
 
 	@classmethod
-	def exists(cls, user_name, password):
-		return bool(cls.query.filter_by(user_name=user_name, password=password).first())
+	def exists(cls, user_name):
+		return bool(cls.query.filter_by(user_name=user_name).first())
 
 	@classmethod
 	def get_by_id(cls, id):
@@ -42,6 +49,14 @@ class User(db.Model):
 		user_name = session['user_name']
 		password = session['password']
 		return cls.get_user_data(user_name, password)
+
+
+	@classmethod
+	def get_logged_user_basic(cls):
+		user_name = session['user_name']
+		password = session['password']
+		return cls.query.filter_by(user_name=user_name, password=password).first()
+
 
 	@classmethod
 	def get_user_data(cls, user_name, password):
@@ -65,13 +80,18 @@ class User(db.Model):
 		with engine.connect() as conn:
 			return conn.execute(text("SELECT * FROM view_user_data;")).fetchall()
 
+
 	def to_json(self):
+		user = self.get_data_by_id(self.user_id)
 		return {
-			"user_id": self.user_id,
-			"user_name": self.user_name,
-			"password": self.password,
-			"role_id": self.role_id,
-			"image": self.image
+			"user_id": user.user_id,
+			"user_name": user.user_name,
+			"password": user.password,
+			"image": user.image,
+			"created_at": user.created_at,
+			"updated_at": user.updated_at,
+			"role_id": user.role_id,
+			"role_name": user.role_name
 		}`
 }
 
