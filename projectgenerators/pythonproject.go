@@ -151,11 +151,17 @@ func (python *PythonProject) GenerateHelpers(rootDir string) {
 	helpersFolder := rootDir+"/helpers"
 	httpFile := "http_code.py"
 	constFile := "constants.py"
+	uploaderFile := "file_uploader.py"
+	passwordHandlerFile := "password_handler.py"
 	pyFileManager.CreateFolderAll(helpersFolder)
 	pyFileManager.CreateFile(helpersFolder, httpFile)
 	pyFileManager.CreateFile(helpersFolder, constFile)
+	pyFileManager.CreateFile(helpersFolder, uploaderFile)
+	pyFileManager.CreateFile(helpersFolder, passwordHandlerFile)
 	pyFileManager.WriteFile(helpersFolder, httpFile, helper.HttpCodes())
 	pyFileManager.WriteFile(helpersFolder, constFile, helper.Constants())
+	pyFileManager.WriteFile(helpersFolder, uploaderFile, helper.FileUploader())
+	pyFileManager.WriteFile(helpersFolder, passwordHandlerFile, helper.PasswordHandler())
 }
 
 

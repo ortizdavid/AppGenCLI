@@ -55,16 +55,16 @@ from models.task import Task
 
 func (imp* AppImport) ImportForAuthController(appType string) string  {
 return `from config import *
+from helpers.password_handler import *
 from models.user import User
 `+imp.ParticularImport(appType)+``
 }
 
 
 func (imp* AppImport) ImportForUserController(appType string) string  {
-return `import os
-from config import *
+return `from config import *
+from helpers.file_uploader import *
 from models.user import User
-from werkzeug.utils import secure_filename
 `+imp.ParticularImport(appType)+``
 }
 

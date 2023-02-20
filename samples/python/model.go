@@ -41,6 +41,10 @@ class User(db.Model):
 		return cls.query.filter_by(user_id=id).first()
 
 	@classmethod
+	def get_by_username(cls, user_name):
+		return cls.query.filter_by(user_name=user_name).first()
+
+	@classmethod
 	def get_all(cls):
 		return cls.query.all()
 
@@ -50,36 +54,38 @@ class User(db.Model):
 		password = session['password']
 		return cls.get_user_data(user_name, password)
 
-
 	@classmethod
 	def get_logged_user_basic(cls):
 		user_name = session['user_name']
 		password = session['password']
 		return cls.query.filter_by(user_name=user_name, password=password).first()
 
-
 	@classmethod
 	def get_user_data(cls, user_name, password):
 		with engine.connect() as conn:
-			return conn.execute(text(f"SELECT * FROM view_user_data WHERE user_name = '{user_name}' AND password='{password}';")).first()
+			return conn.execute(text(f"SELECT * FROM view_user_data WHERE user_name = :user_name AND password = :password;"), {'user_name': user_name, 'password': password}).first()
 
 	@classmethod
 	def search(cls, value):
 		with engine.connect() as conn:
-			return conn.execute(text(f"SELECT * FROM view_user_data WHERE user_id = {value}"+	
-								f" OR user_name = '{value}'"+
-								f" OR role_name = '{value}'")).fetchall()
+			return conn.execute(text(f"SELECT * FROM view_user_data WHERE user_id = :value"+	
+								f" OR user_name = :value "+
+								f" OR role_name = :value"), {'value': value}).fetchall()
 
 	@classmethod
 	def get_data_by_id(cls, id):
 		with engine.connect() as conn:
-			return conn.execute(text(f"SELECT * FROM view_user_data WHERE user_id = {id};")).first()
+			return conn.execute(text("SELECT * FROM view_user_data WHERE user_id = :id;"), {'id': id}).first()
+
+	@classmethod
+	def update_image(cls, image, id):
+		with engine.begin() as conn:
+			conn.execute(text(f"UPDATE users SET image = :image WHERE user_id = :id;"), {'image': image,  'id': id})
 
 	@classmethod
 	def get_all_data(cls):
 		with engine.connect() as conn:
 			return conn.execute(text("SELECT * FROM view_user_data;")).fetchall()
-
 
 	def to_json(self):
 		user = self.get_data_by_id(self.user_id)
@@ -148,19 +154,19 @@ class Task(db.Model):
 	@classmethod
 	def get_by_status(cls, status):
 		with engine.connect() as conn:
-			return conn.execute(text(f"SELECT * FROM view_user_tasks WHERE status = '{status}';")).fetchall()
+			return conn.execute(text(f"SELECT * FROM view_user_tasks WHERE status = :status;"), {'status': status}).fetchall()
 
 	@classmethod
 	def search(cls, value):
 		with engine.connect() as conn:
-			return conn.execute(text(f"SELECT * FROM view_user_tasks WHERE user_id = {value}"+	
-								f" OR user_name = '{value}'"+
-								f" OR role_name = '{value}'")).fetchall()
+			return conn.execute(text(f"SELECT * FROM view_user_tasks WHERE user_id = :value"+	
+								f" OR user_name = :value"+
+								f" OR role_name = :value"), {'value': value}).fetchall()
 
 	@classmethod
 	def get_data_by_id(cls, id):
 		with engine.connect() as conn:
-			return conn.execute(text(f"SELECT * FROM view_user_tasks WHERE task_id = {id};")).first()
+			return conn.execute(text(f"SELECT * FROM view_user_tasks WHERE task_id = :id;"), {'id': id}).first()
 
 	@classmethod
 	def get_all_data(cls):

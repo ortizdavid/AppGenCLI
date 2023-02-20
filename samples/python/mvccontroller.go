@@ -132,7 +132,16 @@ class UserController:
 			res = User.search(value)
 			num_rows =  len(res)
 			return render_template('user/search-results.html', value=value, results=res, 
-					num_rows=num_rows, logged_user=User.get_logged_user())`
+					num_rows=num_rows, logged_user=User.get_logged_user())
+		
+
+	@app.route(f'/{API_ROOT}/users/<id>/upload', methods=['POST'])
+	def upload_image():
+		file = request.files['file']
+		extension = os.path.splitext(file.filename)[1]
+		f_name = str(uuid.uuid4()) + extension
+		file.save(os.path.join(UPLOAD_DIR_IMGS, f_name))
+		return jsonify({'filename':f_name})`
 }
 
 

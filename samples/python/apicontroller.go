@@ -176,7 +176,23 @@ class UserApi:
 			return jsonify({'message': 'Error while deleting User', 'success': False}), HTTP_CODE_NOT_FOUND
 		else:
 			user.delete()
-			return jsonify({'message': 'User Deleted!', 'success': True}), HTTP_CODE_OK`
+			return jsonify({'message': 'User Deleted!', 'success': True}), HTTP_CODE_OK
+
+
+	@app.route(f'/{API_ROOT}/users/<id>/upload', methods=['POST'])
+	def upload_image(id):
+		user = User.get_by_id(id)
+		if user is None:
+			return jsonify({'message' : 'User not Found', 'success': False}), HTTP_CODE_NOT_FOUND
+		else:
+			uploader = FileUploader()
+			image = uploader.upload_image('image', UPLOAD_DIR_IMGS)
+			errors = uploader.errors
+			if len(errors) > 0:
+				return jsonify({'errors': errors, 'message' : 'Error while Uploading', 'success': False}), HTTP_CODE_BAD_REQUEST
+			else:
+				user.update_image(image, id)
+				return jsonify({'file': image, 'message' : 'File successfully uploaded', 'success': True}), HTTP_CODE_CREATED`
 }
 
 
@@ -255,10 +271,12 @@ class AuthApi:
 		data = request.get_json()
 		user_name = data['user_name']
 		password = data['password']
-	
-		if(User.exists(user_name, password)):
+		user = User.get_by_username(user_name)
+		encrypted_password = user.password
+		
+		if PasswordHandler.check(encrypted_password, password):
 			session['user_name'] = user_name
-			session['password'] = password
+			session['password'] = encrypted_password
 			logged_user = User.get_logged_user_basic()
 			return jsonify({'data': logged_user.to_json(), 'message': 'Login Succeeded', 'success': True}), HTTP_CODE_OK
 		else:
