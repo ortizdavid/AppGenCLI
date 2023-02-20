@@ -40,6 +40,7 @@ from config import db, engine`
 func (imp* AppImport) ImportForRoleController(appType string) string  {
 return `from config import *
 from models.role import Role
+from models.user import User
 `+imp.ParticularImport(appType)+``
 }
 	
@@ -64,7 +65,9 @@ from models.user import User
 func (imp* AppImport) ImportForUserController(appType string) string  {
 return `from config import *
 from helpers.file_uploader import *
+from helpers.password_handler import *
 from models.user import User
+from models.role import Role
 `+imp.ParticularImport(appType)+``
 }
 

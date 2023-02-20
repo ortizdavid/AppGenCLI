@@ -14,9 +14,9 @@ class User(db.Model):
 
 	user_id = db.Column(db.Integer, primary_key=True)
 	role_id = db.Column(db.Integer)
-	user_name = db.Column(db.String(150))
-	password = db.Column(db.String(100))
-	image = db.Column(db.String(100))
+	user_name = db.Column(db.String(100))
+	password = db.Column(db.String(150))
+	image = db.Column(db.String(150))
 
 	def __init__(self, role_id, user_name, password, image):
 		self.user_name = user_name

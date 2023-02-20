@@ -19,22 +19,22 @@
 
 ## EXAMPLES:
 
-1. Create a MVC App with Python and MySQL:
+- Create a MVC App with Python and MySQL:
     ``
     appgen -name PythonMVC -lang python -type mvc -db mysql 
     ``
 
-2. Creates an API with Python and Postgres:
+- Creates an API with Python and Postgres:
     ``
     appgen -name PythonAPI -lang python -type api -db postgres    
     `` 
 
-3. Show help comands:
+- Show help comands:
     ``
     appgen help 
     ``   
 
-4. List all suportded languages:
+- List all suportded languages:
     ``
     appgen list-langs 
     ``                                                      

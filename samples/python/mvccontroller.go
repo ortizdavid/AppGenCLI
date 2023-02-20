@@ -11,21 +11,32 @@ return ``+mvcImport.ImportForTaskController("mvc")+`
 
 class TaskController:
 
+
 	@app.route('/tasks', methods=['GET'])
 	def show_tasks():
 		tasks = Task.get_all_data()
 		num_rows = len(tasks)
 		return render_template('task/show.html', tasks=tasks, num_rows=num_rows, logged_user=User.get_logged_user())
 
+
+	@app.route('/my-tasks', methods=['GET'])
+	def user_tasks():
+		logged_user=User.get_logged_user()
+		tasks = Task.get_all_user_tasks(logged_user.user_id)
+		num_rows = len(tasks)
+		return render_template('task/user-tasks.html', tasks=tasks, num_rows=num_rows, logged_user=logged_user)
+
+
 	@app.route('/tasks/<id>/details', methods=['GET'])
 	def task_details(id):
-		task = task.get_data_by_id(id)
+		task = Task.get_data_by_id(id)
 		if task:
 			return render_template('task/details.html', task=task, logged_user=User.get_logged_user())
 		else:
 			return render_template('errorr/404.html')
 
-	@app.route('/task/add', methods=['GET', 'POST'])
+
+	@app.route('/tasks/add', methods=['GET', 'POST'])
 	def add_task():
 		logged_user=User.get_logged_user()
 		if request.method == 'GET': 
@@ -38,9 +49,10 @@ class TaskController:
 			user_id = logged_user.user_id
 			task = Task(user_id, task_name, start_date, end_date, description)
 			task.save()
-			return redirect(url_for('show_tasks'))
+			return redirect(url_for('user_tasks'))
 
-	@app.route('/task/<id>/edit', methods=['GET', 'POST'])
+
+	@app.route('/tasks/<id>/edit', methods=['GET', 'POST'])
 	def edit_task(id):
 		task = Task.get_by_id(id)
 		logged_user=User.get_logged_user()
@@ -53,8 +65,9 @@ class TaskController:
 			description = request.form['description']
 			user_id = logged_user.user_id
 			new_task = Task(user_id, task_name, start_date, end_date, description)
-			new_tsak.save()
+			new_task.save()
 			return redirect(url_for('show_users'))
+
 
 	@app.route('/task/search', methods=['GET', 'POST'])
 	def search_task():
@@ -80,6 +93,7 @@ class UserController:
 		num_rows = len(users)
 		return render_template('user/show.html', users=users, num_rows=num_rows, logged_user=User.get_logged_user())
 
+
 	@app.route('/users/<id>/details', methods=['GET'])
 	def user_details(id):
 		user = User.get_data_by_id(id)
@@ -88,26 +102,31 @@ class UserController:
 		else:
 			return render_template('errorr/404.html')
 
-	@app.route(f'/user-data', methods=['GET'])
+
+	@app.route('/user-data', methods=['GET'])
 	def get_user_data():
-		logged_user = User.obter_logged_user()
-		data = User.get_by_id(logged_user.user_id)
+		logged_user = User.get_logged_user()
+		data = User.get_data_by_id(logged_user.user_id)
 		return render_template('user/user-data.html', data=data, logged_user=logged_user)
+
 
 	@app.route('/users/add', methods=['GET', 'POST'])
 	def add_user():
+		roles = Role.get_all()
+		logged_user=User.get_logged_user()
+
 		if request.method == 'GET': 
-			return render_template('user/add.html', logged_user=User.get_logged_user())
+			return render_template('user/add.html', logged_user=logged_user, roles=roles)
 		else:
 			user_name = request.form['user_name']
-			password = request.form['password']
 			role_id = request.form['role_id']
-			file = request.form['image']
-			image = secure_filename(file.filename)
-			file.save(os.path.join(UPLOAD_DIR_IMGS, image))
-			user = User(role_id, user_name, password, image)
+			password = request.form['password']
+			encrypt_password = PasswordHandler.generate(password)
+			image = ''
+			user = User(role_id, user_name, encrypt_password, image)
 			user.save()
 			return redirect(url_for('show_users'))
+
 
 	@app.route('/users/<id>/edit', methods=['GET', 'POST'])
 	def edit_user(id):
@@ -123,10 +142,11 @@ class UserController:
 			new_user.save()
 			return redirect(url_for('show_users'))
 
+
 	@app.route('/users/search', methods=['GET', 'POST'])
 	def search_user():
 		if request.method == 'GET': 
-			return render_template('user/search.html',logged_user=User.get_logged_user())
+			return render_template('user/search.html', logged_user=User.get_logged_user())
 		else:
 			value = request.form['search_value']
 			res = User.search(value)
@@ -135,13 +155,17 @@ class UserController:
 					num_rows=num_rows, logged_user=User.get_logged_user())
 		
 
-	@app.route(f'/{API_ROOT}/users/<id>/upload', methods=['POST'])
+	@app.route(f'/upload-image', methods=['GET', 'POST'])
 	def upload_image():
-		file = request.files['file']
-		extension = os.path.splitext(file.filename)[1]
-		f_name = str(uuid.uuid4()) + extension
-		file.save(os.path.join(UPLOAD_DIR_IMGS, f_name))
-		return jsonify({'filename':f_name})`
+		logged_user = User.get_logged_user_basic()
+		if request.method == 'GET': 
+			return render_template('user/upload-image.html', logged_user=logged_user)
+		else:
+			user_id = logged_user.user_id
+			uploader = FileUploader()
+			image = uploader.upload_image('image', UPLOAD_DIR_IMGS)
+			logged_user.update_image(image, user_id)
+			return redirect(url_for('get_user_data'))`
 }
 
 
@@ -156,6 +180,7 @@ class RoleController:
 		num_rows = len(roles)
 		return render_template('role/show.html', roles=roles, num_rows=num_rows, logged_user=User.get_logged_user())
 
+
 	@app.route('/roles/<id>/details', methods=['GET'])
 	def role_details(id):
 		role = Role.get_data_by_id(id)
@@ -163,6 +188,7 @@ class RoleController:
 			return render_template('role/details.html', role=role, logged_user=User.get_logged_user())
 		else:
 			return render_template('error/404.html')
+
 
 	@app.route('/roles/add', methods=['GET', 'POST'])
 	def add_role():
@@ -188,17 +214,22 @@ class AuthController:
 		else:
 			user_name = request.form['user_name']
 			password = request.form['password']
-			if(User.exists(user_name, password)):
+			user = User.get_by_username(user_name)
+
+			encrypted_password = user.password
+			if PasswordHandler.check(encrypted_password, password):
 				session['user_name'] = user_name
-				session['password'] = password
+				session['password'] = encrypted_password
 				return redirect(url_for('home'))
 			else:
 				return redirect(url_for('login'))
+
 
 	@app.route('/logout', methods=['GET'])
 	def logout():
 		session.pop('user_name')
 		return redirect(url_for('login'))
+
 
 	@app.route('/home', methods=['GET'])
 	def home():

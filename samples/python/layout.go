@@ -44,38 +44,38 @@ return `<div id="content" class="container">
 
 func (l *Layout) AdminMenu() string  {
 return `<nav class="navbar navbar-expand-lg navbar-light bg-primary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/home" style="color: white">
-            Admin
-        </a>
-        <button class="navbar-toggler" type="button">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarScroll">
-            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                <li class="nav-item">
-                    <a href="/home"  class="nav-link active" aria-current="page"style="color: white">
-                        Home  
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/users" class="nav-link" style="color: white">
-                        Users 
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/tasks" class="nav-link" style="color: white">
-                        Tasks 
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/logout" class="nav-link" style="color: white">
-                        Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
+<div class="container-fluid">
+    <a class="navbar-brand" href="/home" style="color: white">
+        Admin
+    </a>
+    <button class="navbar-toggler" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+            <li class="nav-item">
+                <a href="/home"  class="nav-link active" aria-current="page"style="color: white">
+                    Home  
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/users" class="nav-link" style="color: white">
+                    Users 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/tasks" class="nav-link" style="color: white">
+                    Tasks 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/logout" class="nav-link" style="color: white">
+                    Logout
+                </a>
+            </li>
+        </ul>
     </div>
+</div>
 </nav>`
 }
 
@@ -102,7 +102,7 @@ return `<nav class="navbar navbar-expand-lg navbar-light bg-primary">
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/tasks" class="nav-link" style="color: white">
+                    <a href="/my-tasks" class="nav-link" style="color: white">
                         My Tasks 
                     </a>
                 </li>
@@ -157,7 +157,7 @@ return ``+l.Header(appName)+`
 func (l *Layout) BackLayout(appName string) string  {
 return ``+l.Header(appName)+`
     <!-- MENU ACCORDING USER ROLE -->
-    {% if logged_user.role_name == 'admin' %}
+    {% if logged_user.role_name == 'administrator' %}
         {% include 'layouts/admin-menu.html' %}
     {% elif logged_user.role_name == 'normal' %}
         {% include 'layouts/normal-menu.html' %}

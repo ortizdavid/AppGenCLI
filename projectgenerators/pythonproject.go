@@ -296,6 +296,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	userSearchResultsFile := "search-results.html"
 	userShowFile := "show.html"
 	userDetailsFile := "details.html"
+	userUploadFile := "upload-image.html"
 
 	taskAddFile := "add.html"
 	taskEditFile := "edit.html"
@@ -303,6 +304,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	taskSearchFile := "search.html"
 	taskSearchResultsFile := "search-results.html"
 	taskDetailsFile := "details.html"
+	userTasksFile := "user-tasks.html"
 
 	roleAddFile := "add.html"
 	roleShowFile := "show.html"
@@ -322,8 +324,8 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	pyFileManager.CreateFileAll(authFolder, loginFile, homeFile)
 	pyFileManager.CreateFileAll(layoutsFolder, frontLayoutFile, backLayoutFile, normalMenuFile, adminMenuFile)
 	pyFileManager.CreateFileAll(roleFolder, roleAddFile, roleShowFile, roleDetailsFile)
-	pyFileManager.CreateFileAll(taskFolder, taskAddFile, taskEditFile, taskSearchFile, taskSearchResultsFile, taskShowFile, taskDetailsFile)
-	pyFileManager.CreateFileAll(userFolder, userAddFile, userEditFile, userDataFile, userSearchFile, userSearchResultsFile, userShowFile, userSearchFile, userDetailsFile)
+	pyFileManager.CreateFileAll(taskFolder, taskAddFile, taskEditFile, taskSearchFile, taskSearchResultsFile, taskShowFile, taskDetailsFile, userTasksFile)
+	pyFileManager.CreateFileAll(userFolder, userAddFile, userEditFile, userDataFile, userSearchFile, userSearchResultsFile, userShowFile, userSearchFile, userDetailsFile, userUploadFile)
 
 	pyFileManager.WriteFile(layoutsFolder, frontLayoutFile, layout.FontLayout(rootDir))
 	pyFileManager.WriteFile(layoutsFolder, backLayoutFile, layout.BackLayout(rootDir))
@@ -343,6 +345,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	pyFileManager.WriteFile(userFolder, userSearchFile, user.SearchTemplate())
 	pyFileManager.WriteFile(userFolder, userSearchResultsFile, user.SearchResultsTemplate())
 	pyFileManager.WriteFile(userFolder, userDataFile, user.UserDataTemplate())
+	pyFileManager.WriteFile(userFolder, userUploadFile, user.UserUploadTemplate())
 
 	pyFileManager.WriteFile(taskFolder, taskAddFile, task.AddTemplate())
 	pyFileManager.WriteFile(taskFolder, taskEditFile, task.EditTemplate())
@@ -350,6 +353,7 @@ func (python *PythonProject) GenerateViews(rootDir string) {
 	pyFileManager.WriteFile(taskFolder, taskSearchFile, task.SearchTemplate())
 	pyFileManager.WriteFile(taskFolder, taskSearchResultsFile, task.SearchResultsTemplate())
 	pyFileManager.WriteFile(taskFolder, taskDetailsFile, task.DetailsTemplate())
+	pyFileManager.WriteFile(taskFolder, userTasksFile, task.UserTasksTemplate())
 
 	pyFileManager.WriteFile(roleFolder, roleAddFile, role.AddTemplate())
 	pyFileManager.WriteFile(taskFolder, roleDetailsFile, role.DetailsTemplate())

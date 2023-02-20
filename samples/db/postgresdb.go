@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS roles (
 DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users (
 	user_id SERIAL NOT NULL PRIMARY KEY,
-	user_name VARCHAR(50) NOT NULL UNIQUE,
-	password VARCHAR(100) NOT NULL,
+	user_name VARCHAR(100) NOT NULL UNIQUE,
+	password VARCHAR(150) NOT NULL,
 	role_id INT NOT NULL,
-	image VARCHAR(100),
+	image VARCHAR(150),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT fk_role_user FOREIGN KEY(role_id) REFERENCES roles(role_id)
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS users (
 DROP TABLE IF EXISTS tasks;
 CREATE TABLE IF NOT EXISTS tasks (
 	task_id SERIAL NOT NULL PRIMARY KEY,
-	task_name VARCHAR(50) NOT NULL,
+	task_name VARCHAR(100) NOT NULL,
 	description VARCHAR(200) NOT NULL,
 	status TYPE_STATUS DEFAULT 'Pending',
 	start_date DATE NOT NULL,
@@ -79,17 +79,18 @@ ORDER BY u.created_at DESC;`
 func (pg *PostgresDB) InsertRoles() string {
 return `
 -- INSERTING DATA
-INSERT INTO roles (role_name) VALUES ('admin');
+INSERT INTO roles (role_name) VALUES ('administrator');
 INSERT INTO roles (role_name) VALUES ('normal');`
 }
 
 
 func (pg *PostgresDB) InsertUsers() string {
-return `INSERT INTO users (user_name, password, role_id) VALUES ('admin', '12345678', 1);
-INSERT INTO users (user_name, password, role_id) VALUES ('user1', '12345678', 2);
-INSERT INTO users (user_name, password, role_id) VALUES ('user2', '12345678', 2);
-INSERT INTO users (user_name, password, role_id) VALUES ('user3', '12345678', 2);
-INSERT INTO users (user_name, password, role_id) VALUES ('user4', '12345678', 2);`
+return `INSERT INTO users (user_name, password, role_id) VALUES ('admin01', 'sha256$Y6n9BV9QhGkoORIz$6200b3b9cf111f359846716ecd42122fac99808cd51cea6e135ba7fc0e7687f8', 1);
+INSERT INTO users (user_name, password, role_id) VALUES ('admin02', 'sha256$Y6n9BV9QhGkoORIz$6200b3b9cf111f359846716ecd42122fac99808cd51cea6e135ba7fc0e7687f8', 1);
+INSERT INTO users (user_name, password, role_id) VALUES ('user1', 'sha256$0NMAtO3uqwrB5HRz$933ecf05af2687e98348fed1dd2285ec1234e4b47b8fed8e8c575d7ea5e4644a', 2);
+INSERT INTO users (user_name, password, role_id) VALUES ('user2', 'sha256$0NMAtO3uqwrB5HRz$933ecf05af2687e98348fed1dd2285ec1234e4b47b8fed8e8c575d7ea5e4644a', 2);
+INSERT INTO users (user_name, password, role_id) VALUES ('user3', 'sha256$0NMAtO3uqwrB5HRz$933ecf05af2687e98348fed1dd2285ec1234e4b47b8fed8e8c575d7ea5e4644a', 2);
+INSERT INTO users (user_name, password, role_id) VALUES ('user4', 'sha256$0NMAtO3uqwrB5HRz$933ecf05af2687e98348fed1dd2285ec1234e4b47b8fed8e8c575d7ea5e4644a', 2);`
 }
 
 
