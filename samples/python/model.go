@@ -132,8 +132,8 @@ class Task(db.Model):
 		db.session.commit()
 
 	@classmethod
-	def exists(cls, user_id, task_name,):
-		return bool(cls.query.filter_by(user_id=user_id, task_name=task_name).first())
+	def exists(cls, user_id, task_name, start_date, end_date):
+		return bool(cls.query.filter_by(user_id=user_id, task_name=task_name, start_date=start_date, end_date=end_date).first())
 		
 	@classmethod
 	def get_by_id(cls, id):

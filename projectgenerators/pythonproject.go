@@ -2,8 +2,10 @@ package projectgenerators
 
 import (
 	"fmt"
+
 	"github.com/ortizdavid/appgen/filemanager"
 	"github.com/ortizdavid/appgen/helpers"
+	"github.com/ortizdavid/appgen/samples/collections"
 	dbsamples "github.com/ortizdavid/appgen/samples/db"
 	"github.com/ortizdavid/appgen/samples/libs"
 	pythonsamples "github.com/ortizdavid/appgen/samples/python"
@@ -39,6 +41,7 @@ func (python *PythonProject) CreateApp(appName string, appType string, db string
 			python.GenerateMvcControllers(appName)
 		case "api":
 			python.GenerateApiControllers(appName)
+			python.GeneratePostmanCollections(appName)
 		}
 		switch db {
 		case "mysql":
@@ -145,6 +148,17 @@ func (python *PythonProject) GenerateRequirements(rootDir string, db string) {
 	pyFileManager.WriteFile(rootDir, file, deps.Requirements(db))
 }
 
+func (python *PythonProject) GeneratePostmanCollections(rootDir string) {
+	var postman *collectionsamples.Postman
+	collectionsFolder := rootDir+"/__postman_collections__"
+	collection := "postman_collection.json"
+	testRun := "postman_test_run.json"
+	pyFileManager.CreateFolderAll(collectionsFolder)
+	pyFileManager.CreateFileAll(collectionsFolder, collection, testRun)
+	pyFileManager.WriteFile(collectionsFolder, collection, postman.PostmanCollection(rootDir))
+	pyFileManager.WriteFile(collectionsFolder, testRun, postman.PostmanTestRun(rootDir))
+}
+
 
 func (python *PythonProject) GenerateHelpers(rootDir string) {
 	var helper *pythonsamples.Helper
@@ -247,15 +261,18 @@ func (python *PythonProject) GenerateApiControllers(rootDir string) {
 	userFile := "user_api.py"
 	taskFile := "task_api.py"
 	authFile := "auth_api.py"
+	rootFile := "root_api.py"
 	pyFileManager.CreateFolderAll(apiControllersFolder)
 	pyFileManager.CreateFile(apiControllersFolder, roleFile)
 	pyFileManager.CreateFile(apiControllersFolder, taskFile)
 	pyFileManager.CreateFile(apiControllersFolder, userFile)
 	pyFileManager.CreateFile(apiControllersFolder, authFile)
+	pyFileManager.CreateFile(apiControllersFolder, rootFile)
 	pyFileManager.WriteFile(apiControllersFolder, roleFile, apiController.RoleApiController())
 	pyFileManager.WriteFile(apiControllersFolder, userFile, apiController.UserApiController())
 	pyFileManager.WriteFile(apiControllersFolder, taskFile, apiController.TaskApiController())
 	pyFileManager.WriteFile(apiControllersFolder, authFile, apiController.AuthApiController())
+	pyFileManager.WriteFile(apiControllersFolder, rootFile, apiController.RootApiController())
 }
 
 

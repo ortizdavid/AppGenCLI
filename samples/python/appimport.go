@@ -86,13 +86,13 @@ from controllers import (
 
 
 func (imp* AppImport) ImportForRestApi() string  {
-return `from flask import jsonify, render_template
-from config import *
+return `from config import *
 from api_controllers import (
 	user_api,
 	auth_api,
 	task_api,
-	role_api
+	role_api,
+	root_api
 )
 `
 }
