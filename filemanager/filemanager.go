@@ -9,7 +9,7 @@ import (
 type FileManager struct {}
 
 func (fm *FileManager) CreateFolder(folderName string) {
-	folder := os.Mkdir(folderName, os.FileMode(1))
+	folder := os.Mkdir(folderName, 0777)
 	if folder != nil {
 		fmt.Println(folder.Error())
 	} else {
@@ -18,7 +18,7 @@ func (fm *FileManager) CreateFolder(folderName string) {
 }
 
 func (fm *FileManager) CreateFolderAll(folderName string) {
-	folder := os.MkdirAll(folderName, os.FileMode(1))
+	folder := os.MkdirAll(folderName, 0777)
 	if folder != nil {
 		fmt.Println(folder.Error())
 	} else {
