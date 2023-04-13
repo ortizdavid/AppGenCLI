@@ -35,7 +35,7 @@ return`## Pre requisites:
 - Change database connection variables on: [config.py](config.py)
 - Run application: flask run or python app.py
 - Open browser: http://localhost:5000
-- Users for tests: admin01, admin02, user1, user2, ...
+- Users for tests: admin01, admin02, user1, user2, 
 - Passwords for all users: 12345678`
 }
 
