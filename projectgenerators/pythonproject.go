@@ -64,8 +64,8 @@ func (python *PythonProject) CreateApp(appName string, appType string, db string
 
 
 func (python *PythonProject) GenerateUploadsDir(rootDir string) {
-	pyFileManager.CreateFolderAll(rootDir+"/uploads/imgs")
-	pyFileManager.CreateFolderAll(rootDir+"/uploads/docs")
+	pyFileManager.CreateFolderAll(rootDir+"/static/uploads/imgs")
+	pyFileManager.CreateFolderAll(rootDir+"/static/uploads/docs")
 }
 
 

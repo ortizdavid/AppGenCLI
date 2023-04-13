@@ -121,9 +121,9 @@ class UserController:
 			user_name = request.form['user_name']
 			role_id = request.form['role_id']
 			password = request.form['password']
-			encrypt_password = PasswordHandler.generate(password)
+			encrypted_password = PasswordHandler.generate(password)
 			image = ''
-			user = User(role_id, user_name, encrypt_password, image)
+			user = User(role_id, user_name, encrypted_password, image)
 			user.save()
 			return redirect(url_for('show_users'))
 

@@ -168,7 +168,7 @@ return`{% extends "layouts/back-layout.html" %}
             {% if user.image is none %}
                 <img style="width:10%" class="img img-rounded" src="/static/images/blank-user.png" alt="Image" class="card-img-left">
             {% else %}
-                <img style="width:30%" class="img img-rounded" src="/uploads/imgs/{{ user.image }}" alt="Image" class="card-img-left">
+                <img style="width:30%" class="img img-rounded" src="/static/uploads/imgs/{{ user.image }}" alt="Image" class="card-img-left">
             {% endif %}
             <br><br>
             <p><strong>Id: </strong>{{ user.user_id }}</p>
@@ -202,7 +202,7 @@ return`
                 <img style="width:10%" class="img img-rounded" src="/static/images/blank-data.png" alt="Image" class="card-img-left"><br>
                 <a href="/upload-image" class="btn btn-primary">Upload Image</a>
             {% else %}
-                <img style="width:30%" class="img img-rounded" src="/uploads/imgs/{{ data.image }}" alt="Image" class="card-img-left">
+                <img style="width:30%" class="img img-rounded" src="/static/uploads/imgs/{{ data.image }}" alt="Image" class="card-img-left">
             {% endif %}
             <br><br>
             <p><strong>Id: </strong>{{ data.user_id }}</p>

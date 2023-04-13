@@ -42,9 +42,11 @@ from flask import request
 
 class FileUploader:
 
-    IMGS_EXTENSIONS = {'.png', '.jpg', '.jpeg'}
+    IMG_EXTENSIONS = {'.png', '.jpg', '.jpeg'}
+    VIDEO_EXTENSIONS = {'.mp4', '.mkv', '.flv'}
     PDF_EXTENSIONS = {'.pdf'}
     errors = []
+    
 
     def __init__(self):
         pass
@@ -66,8 +68,49 @@ class FileUploader:
         if original_name == '':
             self.errors.append('No file selected for uploading')
             return None
-        if extension not in self.IMGS_EXTENSIONS:
-            self.errors.append(f'Invalid extension.. Allowed images {self.IMGS_EXTENSIONS}')
+        if extension not in self.IMG_EXTENSIONS:
+            self.errors.append(f'Invalid Image.. Allowed Formats {self.IMG_EXTENSIONS}')
+            return None
+        if len(self.errors) == 0:
+            final_name = str(uuid.uuid4()) + extension
+            file.save(os.path.join(upload_dir, final_name))
+            return final_name
+        
+    def upload_video(self, file_field_name: str, upload_dir: str):
+
+        file = request.files[file_field_name]
+        original_name = file.filename
+        extension = self.get_file_extension(original_name)
+        
+        if file_field_name not in request.files:
+            self.errors.append('No file part in the request')
+            return None
+        if original_name == '':
+            self.errors.append('No file selected for uploading')
+            return None
+        if extension not in self.VIDEO_EXTENSIONS:
+            self.errors.append(f'Invalid Video.. Allowed Formats {self.VIDEO_EXTENSIONS}')
+            return None
+        if len(self.errors) == 0:
+            final_name = str(uuid.uuid4()) + extension
+            file.save(os.path.join(upload_dir, final_name))
+            return final_name
+        
+
+    def upload_pdf(self, file_field_name: str, upload_dir: str):
+
+        file = request.files[file_field_name]
+        original_name = file.filename
+        extension = self.get_file_extension(original_name)
+        
+        if file_field_name not in request.files:
+            self.errors.append('No file part in the request')
+            return None
+        if original_name == '':
+            self.errors.append('No file selected for uploading')
+            return None
+        if extension not in self.PDF_EXTENSIONS:
+            self.errors.append(f'Invalid PDF.. Allowed formats {self.PDF_EXTENSIONS}')
             return None
         if len(self.errors) == 0:
             final_name = str(uuid.uuid4()) + extension

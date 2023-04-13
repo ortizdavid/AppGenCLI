@@ -37,8 +37,8 @@ APP_PORT = "5000"
 APP_ROOT = f"localhost:{APP_PORT}"
 API_ROOT = "/api"
 
-UPLOAD_DIR_IMGS = "uploads/imgs"
-UPLOAD_DIR_DOCS = "uploads/docs"
+UPLOAD_DIR_IMGS = "static/uploads/imgs"
+UPLOAD_DIR_DOCS = "static/uploads/docs"
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
