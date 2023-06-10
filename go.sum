@@ -1,0 +1,4 @@
+github.com/ortizdavid/AppGenCore v0.0.0-20230610212812-00bdf223b998 h1:jBH+DUe942aeW8NgjGbi2ldM7jzMxwRqq/LFMvOk+X0=
+github.com/ortizdavid/AppGenCore v0.0.0-20230610212812-00bdf223b998/go.mod h1:by6UYlxNNNCQaLkgrUoGizKn4uALquXKejIpyeOEjgk=
+github.com/ortizdavid/filemanager v0.0.0-20230609123704-0aea4bc8d468 h1:yhjSlsTcR3aGSSgEICgTWRJxxuVzAb2C9vlR4MiHdzk=
+github.com/ortizdavid/filemanager v0.0.0-20230609123704-0aea4bc8d468/go.mod h1:9hU0ZmtMxcXtBQf0DHiswP1+LvLKtQI8pbMHXPzoUQU=
