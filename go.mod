@@ -1,3 +1,3 @@
-module github.com/ortizdavid/appgen
+module github.com/ortizdavid/AppGenCLI
 
-go 1.19
+go 1.20

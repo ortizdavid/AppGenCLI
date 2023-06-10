@@ -3,15 +3,20 @@ package main
 import (
 	"fmt"
 	"os"
-	"github.com/ortizdavid/appgen/projectgenerators"
-	"github.com/ortizdavid/appgen/helpers"
+	"github.com/ortizdavid/AppGenCore/generators"
+	"github.com/ortizdavid/AppGenCore/helpers"
 )
 
+
+func getCommands() []string {
+	commands := [] string {"-name", "-lang", "-type", "-db"}
+	return commands
+}
 
 func main() {
 	var cliArgs = os.Args;
 	var lenArgs = len(cliArgs)
-	var project  *projectgenerators.ProjectGenerator
+	var application  *generators.ApplicationGenerator
 	
 	if lenArgs == 1 {
 		helpers.PrintHelp()
@@ -35,17 +40,10 @@ func main() {
 		typeCommand, appType := cliArgs[5], cliArgs[6]
 		dbCommand, db := cliArgs[7], cliArgs[8]
 
-		if helpers.ContainsMultiple(project.GetCommands(), appCommand, langCommand, typeCommand, dbCommand) == false {
+		if helpers.ContainsMultiple(getCommands(), appCommand, langCommand, typeCommand, dbCommand) == false {
 			fmt.Println(helpers.INVALID_COMMAND)
-
-		} else if helpers.Contains(project.GetLanguages(), lang) == false {
-			fmt.Printf(helpers.UNSUPORTED_LANGUAGE, lang)
-
-		} else if helpers.Contains(project.GetDatabases(), db) == false {
-			fmt.Printf(helpers.UNSUPORTED_DB, db)
-
 		} else {
-			project.Generate(appName, lang, appType, db)
+			application.Generate(appName, lang, appType, db)
 		}
 		
 	}
